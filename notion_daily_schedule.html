@@ -1,0 +1,221 @@
+
+<h2 class="sr-only">Personalized daily schedule for WFH days, office days, and weekends — copy into Notion</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.root{padding:1rem 0;font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab{padding:5px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:transparent;font-size:13px;cursor:pointer;color:var(--color-text-secondary)}
+.tab.on{background:var(--color-background-secondary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-primary)}
+.view{display:none}.view.on{display:block}
+.row{display:grid;grid-template-columns:72px 1fr;gap:10px;margin-bottom:6px;align-items:start}
+.t{font-size:11px;color:var(--color-text-tertiary);padding-top:9px;text-align:right;letter-spacing:.3px}
+.card{border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);padding:8px 12px}
+.card.morning{background:var(--color-background-secondary)}
+.card.work{border-color:var(--color-border-info);background:var(--color-background-info)}
+.card.walk{border-color:var(--color-border-success);background:var(--color-background-success)}
+.card.eve{background:var(--color-background-secondary)}
+.card.night{background:var(--color-background-secondary)}
+.ctitle{font-size:13px;font-weight:500;color:var(--color-text-primary);display:flex;align-items:center;gap:6px}
+.csub{font-size:12px;color:var(--color-text-secondary);margin-top:3px;line-height:1.4}
+.badge{font-size:11px;padding:2px 7px;border-radius:99px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
+.badge.dog{background:var(--color-background-success);color:var(--color-text-success);border-color:transparent}
+.badge.ital{background:#EEEDFE;color:#3C3489;border-color:transparent}
+.badge.health{background:var(--color-background-warning);color:var(--color-text-warning);border-color:transparent}
+.divider{height:0.5px;background:var(--color-border-tertiary);margin:1rem 0}
+.note{font-size:12px;color:var(--color-text-secondary);line-height:1.5;padding:8px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);margin-top:12px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
+.dot{width:8px;height:8px;border-radius:50%}
+</style>
+
+<div class="root">
+<div class="tabs">
+  <button class="tab on" onclick="sw('wfh',this)">WFH — Mon/Thu/Fri</button>
+  <button class="tab" onclick="sw('office',this)">Office — Tue/Wed</button>
+  <button class="tab" onclick="sw('weekend',this)">Weekend</button>
+</div>
+
+<div class="legend">
+  <span class="leg"><span class="dot" style="background:var(--color-text-info)"></span>Work</span>
+  <span class="leg"><span class="dot" style="background:var(--color-text-success)"></span>Dog</span>
+  <span class="leg"><span class="dot" style="background:#534AB7"></span>Italian</span>
+  <span class="leg"><span class="dot" style="background:var(--color-text-warning)"></span>Health</span>
+</div>
+
+<div id="wfh" class="view on">
+  <div class="row">
+    <span class="t">7:30</span>
+    <div class="card morning">
+      <div class="ctitle"><i class="ti ti-brightness" aria-hidden="true" style="font-size:15px"></i> Wake up <span class="badge health">ear drops</span><span class="badge health">vitamins</span></div>
+      <div class="csub">Both before phone. Drops + vitamins are next to bed/coffee machine.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">7:45</span>
+    <div class="card walk">
+      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Morning dog walk <span class="badge dog">+training</span></div>
+      <div class="csub">Already dressed — not pajamas. 1 trick or 1 crowd exposure moment during the walk. Brush him after you're back (2 min, do it before taking shoes off).</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">8:15</span>
+    <div class="card morning">
+      <div class="ctitle"><i class="ti ti-coffee" aria-hidden="true" style="font-size:15px"></i> Breakfast + coffee — mandatory</div>
+      <div class="csub">You're already in the kitchen from the walk. No back to bed.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">9:00</span>
+    <div class="card work">
+      <div class="ctitle"><i class="ti ti-desk" aria-hidden="true" style="font-size:15px;color:var(--color-text-info)"></i><span style="color:var(--color-text-info)">Work block — desk only, not bed</span></div>
+      <div class="csub" style="color:var(--color-text-info)">Hard rule. Laptop never opens in bed on WFH days.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">12:30</span>
+    <div class="card morning">
+      <div class="ctitle"><i class="ti ti-soup" aria-hidden="true" style="font-size:15px"></i> Lunch <span class="badge ital">Italian 15 min</span></div>
+      <div class="csub">Alarm named "girl get up" at 12:30. Italian podcast/Duolingo while eating — zero extra time cost.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">13:00</span>
+    <div class="card work">
+      <div class="ctitle"><i class="ti ti-desk" aria-hidden="true" style="font-size:15px;color:var(--color-text-info)"></i><span style="color:var(--color-text-info)">Work block continues</span></div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">17:00</span>
+    <div class="card walk">
+      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Evening walk — 40–60 min <span class="badge dog">+training</span></div>
+      <div class="csub">This is your clock-out ritual. Crowd exposure, leash manners, or new trick — pick one focus per walk, not all three.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">18:00</span>
+    <div class="card eve">
+      <div class="ctitle"><i class="ti ti-run" aria-hidden="true" style="font-size:15px"></i> Fitness — 30 min minimum</div>
+      <div class="csub">You're already outside-mode from the walk. Best time to chain it.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">19:00</span>
+    <div class="card eve">
+      <div class="ctitle"><i class="ti ti-home" aria-hidden="true" style="font-size:15px"></i> One micro household task</div>
+      <div class="csub">Laundry basket moved to TV room before you sit down. Or one other small task. Then free evening.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">22:00</span>
+    <div class="card night">
+      <div class="ctitle"><i class="ti ti-moon" aria-hidden="true" style="font-size:15px"></i> Night routine <span class="badge health">ear drops</span><span class="badge health">face</span></div>
+      <div class="csub">Products are on the sink, not in a cupboard. Drops are on your pillow in the morning as reminder.</div>
+    </div>
+  </div>
+</div>
+
+<div id="office" class="view">
+  <div class="row">
+    <span class="t">7:30</span>
+    <div class="card morning">
+      <div class="ctitle"><i class="ti ti-brightness" aria-hidden="true" style="font-size:15px"></i> Wake up <span class="badge health">ear drops</span><span class="badge health">vitamins</span></div>
+      <div class="csub">Commute pressure does the lifting. Vitamins by your keys so you see them on the way out.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">7:45</span>
+    <div class="card walk">
+      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Quick morning walk + brush</div>
+      <div class="csub">Short walk. Brush him when back. Even 5 min of a training moment counts.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">8:15</span>
+    <div class="card morning">
+      <div class="ctitle"><i class="ti ti-coffee" aria-hidden="true" style="font-size:15px"></i> Breakfast + leave for office</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">commute</span>
+    <div class="card morning">
+      <div class="ctitle"><i class="ti ti-headphones" aria-hidden="true" style="font-size:15px"></i> Italian on the way <span class="badge ital">Italian</span></div>
+      <div class="csub">Podcast, playlist or lesson. Zero extra time.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">office</span>
+    <div class="card work">
+      <div class="ctitle"><i class="ti ti-building" aria-hidden="true" style="font-size:15px;color:var(--color-text-info)"></i><span style="color:var(--color-text-info)">Office day — structure comes for free</span></div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">after work</span>
+    <div class="card eve">
+      <div class="ctitle"><i class="ti ti-checklist" aria-hidden="true" style="font-size:15px"></i> One admin task before relaxing</div>
+      <div class="csub">Toothbrush guarantee, picture frame measuring, open that one tab. Office days have natural energy — use 15 min of it.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">21:00</span>
+    <div class="card walk">
+      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Evening walk — 40–60 min <span class="badge dog">+training</span></div>
+      <div class="csub">Later walk on office days. Crowd training is actually great in the evening — more people around.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">22:30</span>
+    <div class="card night">
+      <div class="ctitle"><i class="ti ti-moon" aria-hidden="true" style="font-size:15px"></i> Night routine <span class="badge health">ear drops</span><span class="badge health">face</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="weekend" class="view">
+  <div class="row">
+    <span class="t">flexible</span>
+    <div class="card morning">
+      <div class="ctitle"><i class="ti ti-brightness" aria-hidden="true" style="font-size:15px"></i> Wake up — no alarm needed <span class="badge health">ear drops</span><span class="badge health">vitamins</span></div>
+      <div class="csub">But still: drops + vitamins before phone. Non-negotiable even on weekends.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">morning</span>
+    <div class="card walk">
+      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Morning or evening walk — your choice <span class="badge dog">+training</span></div>
+      <div class="csub">Weekend walks can be longer, more relaxed. Good day for a proper crowd exposure session or new trick focus.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">afternoon</span>
+    <div class="card eve">
+      <div class="ctitle"><i class="ti ti-garden-cart" aria-hidden="true" style="font-size:15px"></i> Garden session — 30–45 min (if weather ok)</div>
+      <div class="csub">One section per session. You're at 5 cleared + 5 mowed — 5 more to go. Not all at once.</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">whenever</span>
+    <div class="card eve">
+      <div class="ctitle"><i class="ti ti-run" aria-hidden="true" style="font-size:15px"></i> Fitness + social — rest is valid too</div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="t">evening</span>
+    <div class="card night">
+      <div class="ctitle"><i class="ti ti-moon" aria-hidden="true" style="font-size:15px"></i> Night routine <span class="badge health">ear drops</span><span class="badge health">face</span></div>
+    </div>
+  </div>
+  <div class="note">Weekend is recovery + garden progress. You don't need to do everything — picking 2 intentional things on a weekend and actually doing them beats an ambitious list that gets ignored.</div>
+</div>
+
+<div class="divider"></div>
+<div class="note"><i class="ti ti-clipboard-copy" aria-hidden="true" style="font-size:14px;margin-right:6px;vertical-align:-2px"></i><strong style="font-weight:500">For Notion:</strong> Create a "Daily Template" page with three toggle sections (WFH / Office / Weekend), paste these blocks as a checklist. Pin the page to your sidebar so it's the first thing you see when you open Notion. Each checkbox costs you 1 second — that's the whole barrier.</div>
+</div>
+
+<script>
+function sw(id,el){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  el.classList.add('on');
+}
+</script>
