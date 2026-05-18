@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Plan 🎨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #D4537E;
+  --pink-light: #FBEAF0;
+  --pink-mid: #F4C0D1;
+  --teal: #1D9E75;
+  --teal-light: #E1F5EE;
+  --amber: #BA7517;
+  --amber-light: #FAEEDA;
+  --purple: #534AB7;
+  --purple-light: #EEEDFE;
+  --blue: #185FA5;
+  --blue-light: #E6F1FB;
+  --coral: #D85A30;
+  --coral-light: #FAECE7;
+  --bg: #FAFAF8;
+  --card: #FFFFFF;
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.14);
+  --text: #1a1a18;
+  --text-2: #5a5a56;
+  --text-3: #9a9a94;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0}
+
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+
+/* sidebar */
+.sidebar{background:var(--card);border-right:1px solid var(--border);padding:1.5rem 0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-logo{padding:0 1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.sidebar-logo h1{font-size:15px;font-weight:500;letter-spacing:-.01em}
+.sidebar-logo p{font-size:11px;color:var(--text-3);margin-top:2px;font-family:'DM Mono',monospace}
+.total-block{padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
+.total-label{font-size:11px;color:var(--text-3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.total-bar-wrap{background:#F0EEE8;border-radius:20px;height:5px;overflow:hidden;margin-bottom:4px}
+.total-bar{height:100%;border-radius:20px;background:var(--pink);transition:width .4s ease}
+.total-count{font-size:12px;color:var(--text-2)}
+nav{padding:.75rem 0;flex:1}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 1.25rem;cursor:pointer;font-size:13px;color:var(--text-2);transition:all .15s;position:relative;border-radius:0}
+.nav-item:hover{color:var(--text);background:#F5F3EF}
+.nav-item.active{color:var(--pink);background:var(--pink-light);font-weight:500}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2.5px;background:var(--pink);border-radius:0 2px 2px 0}
+.nav-icon{font-size:16px;width:20px;text-align:center}
+.nav-prog{margin-left:auto;font-size:10px;font-family:'DM Mono',monospace;color:var(--text-3);background:#F0EEE8;padding:1px 6px;border-radius:20px}
+.nav-item.active .nav-prog{background:var(--pink-mid);color:#7a2848}
+
+/* main */
+.main{padding:2rem 2.5rem;max-width:780px}
+.section-head{margin-bottom:1.75rem}
+.section-head h2{font-size:20px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px}
+.section-head p{font-size:13px;color:var(--text-2);line-height:1.6}
+.sec-prog-wrap{display:flex;align-items:center;gap:10px;margin-top:10px}
+.sec-prog-bar-outer{background:#F0EEE8;border-radius:20px;height:4px;flex:1;overflow:hidden}
+.sec-prog-bar{height:100%;border-radius:20px;background:var(--pink);transition:width .4s ease}
+.sec-prog-label{font-size:11px;font-family:'DM Mono',monospace;color:var(--text-3);min-width:28px}
+
+.group{margin-bottom:1.5rem}
+.group-title{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);padding:0 0 6px 42px;font-family:'DM Mono',monospace}
+.task{display:flex;align-items:flex-start;gap:0;padding:8px 10px 8px 10px;border-radius:var(--radius-sm);cursor:pointer;transition:background .12s;border:1px solid transparent}
+.task:hover{background:#F5F3EF}
+.task.done .task-title{text-decoration:line-through;color:var(--text-3)}
+.task.done{opacity:.6}
+.cb{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border-strong);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;margin-right:12px;transition:all .15s;background:var(--card)}
+.cb.on{background:var(--pink);border-color:var(--pink)}
+.cb svg{display:none;width:10px;height:10px;stroke:#fff;stroke-width:2.5;fill:none}
+.cb.on svg{display:block}
+.task-body{flex:1}
+.task-title{font-size:13.5px;line-height:1.45;color:var(--text)}
+.task-meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.task-note{font-size:11.5px;color:var(--text-3);margin-top:3px;line-height:1.55}
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500;letter-spacing:.01em}
+.b-pink{background:var(--pink-light);color:#8a2248}
+.b-teal{background:var(--teal-light);color:#0d5e46}
+.b-amber{background:var(--amber-light);color:#7a4010}
+.b-purple{background:var(--purple-light);color:#3c3489}
+.b-blue{background:var(--blue-light);color:#0c447c}
+.b-coral{background:var(--coral-light);color:#993c1d}
+.b-gray{background:#F0EEE8;color:var(--text-2)}
+
+/* section visibility */
+.section{display:none}.section.active{display:block}
+
+.reset-btn{margin:auto 1.25rem 1.25rem;padding:7px 12px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:none;color:var(--text-3);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+.reset-btn:hover{background:#F5F3EF;color:var(--text-2)}
+
+/* responsive */
+@media(max-width:600px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto;flex-direction:column}
+  nav{display:flex;flex-wrap:wrap;padding:.5rem}
+  .nav-item{border-radius:var(--radius-sm);padding:6px 10px}
+  .main{padding:1.25rem}
+  .sidebar-logo,.total-block{padding-left:1rem;padding-right:1rem}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>Content Plan</h1>
+    <p>digitale Künstlerin · 2026</p>
+  </div>
+  <div class="total-block">
+    <div class="total-label">Gesamt</div>
+    <div class="total-bar-wrap"><div class="total-bar" id="total-bar" style="width:0%"></div></div>
+    <div class="total-count" id="total-count">0 / 0 erledigt</div>
+  </div>
+  <nav>
+    <div class="nav-item active" onclick="show('setup',this)"><span class="nav-icon">🚀</span>Setup<span class="nav-prog" id="np-setup">0%</span></div>
+    <div class="nav-item" onclick="show('weekly',this)"><span class="nav-icon">📅</span>Wöchentlich<span class="nav-prog" id="np-weekly">0%</span></div>
+    <div class="nav-item" onclick="show('platforms',this)"><span class="nav-icon">📱</span>Plattformen<span class="nav-prog" id="np-platforms">0%</span></div>
+    <div class="nav-item" onclick="show('commissions',this)"><span class="nav-icon">💸</span>Commissions<span class="nav-prog" id="np-commissions">0%</span></div>
+    <div class="nav-item" onclick="show('fandoms',this)"><span class="nav-icon">🎴</span>Fandoms<span class="nav-prog" id="np-fandoms">0%</span></div>
+    <div class="nav-item" onclick="show('twitch',this)"><span class="nav-icon">🎮</span>Twitch<span class="nav-prog" id="np-twitch">0%</span></div>
+  </nav>
+  <button class="reset-btn" onclick="resetAll()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+    zurücksetzen
+  </button>
+</aside>
+
+<main class="main">
+
+<!-- SETUP -->
+<div id="setup" class="section active">
+  <div class="section-head">
+    <h2>Einmaliges Setup</h2>
+    <p>Alles was du einmal einrichten musst bevor der Plan richtig läuft.</p>
+    <div class="sec-prog-wrap"><div class="sec-prog-bar-outer"><div class="sec-prog-bar" id="pb-setup" style="width:0%"></div></div><span class="sec-prog-label" id="pl-setup">0%</span></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Sofort erledigen</div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">PNGtuber-Avatar zeichnen (4–6 Ausdrücke)</div><div class="task-meta"><span class="badge b-pink">Twitch</span><span class="badge b-gray">1× einmalig</span></div><div class="task-note">Idle, sprechend, glücklich, frustriert, fokussiert — Veadotube mini braucht nur transparente PNGs</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Veadotube mini einrichten + in OBS einbinden</div><div class="task-meta"><span class="badge b-pink">Twitch</span><span class="badge b-gray">1× einmalig</span></div><div class="task-note">Kostenlos, läuft leicht im Hintergrund während Art-Streams</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Carrd-Seite aufsetzen / aktualisieren</div><div class="task-meta"><span class="badge b-teal">Commissions</span><span class="badge b-gray">1× einmalig</span></div><div class="task-note">7 Sektionen: Über mich · Status · Was ich male · Preise · Bestellweg · Links · Impressum</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Commission-TOS finalisieren</div><div class="task-meta"><span class="badge b-teal">Commissions</span><span class="badge b-gray">1× einmalig</span></div><div class="task-note">Zahlung 50/50 · Revisionen · Nutzungsrechte · kein KI-Training · Lieferzeit · DSGVO</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Trello-Board für Commission-Queue anlegen</div><div class="task-meta"><span class="badge b-teal">Commissions</span><span class="badge b-gray">1× einmalig</span></div><div class="task-note">Spalten: Angefragt · In Arbeit · WIP geschickt · Fertig — Link an Kunden schicken</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Pinterest-Boards anlegen (nach Charakter + Stil)</div><div class="task-meta"><span class="badge b-amber">Pinterest</span><span class="badge b-gray">1× einmalig</span></div><div class="task-note">„Yu-Gi-Oh fan art", „Kaiba Seto art", „anime lineart", „flat colour digital art"</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Buffer: Instagram + Bluesky verknüpfen</div><div class="task-meta"><span class="badge b-blue">Buffer</span><span class="badge b-gray">1× einmalig</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Twitch: festen Donnerstag-Slot öffentlich ankündigen</div><div class="task-meta"><span class="badge b-pink">Twitch</span><span class="badge b-gray">1× einmalig</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Twitch: DMCA-sichere Musik einrichten (Soundtrack-Tool)</div><div class="task-meta"><span class="badge b-pink">Twitch</span><span class="badge b-gray">1× einmalig</span></div><div class="task-note">Normale Musik stummt YouTube-VODs — Twitch Soundtrack oder Lo-Fi verwenden</div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Kalender-Ereignisse eintragen</div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Jounouchi-Geburtstag 25. Januar einplanen</div><div class="task-meta"><span class="badge b-purple">YGO-Events</span><span class="badge b-gray">jährlich</span></div><div class="task-note">Violetshipping Week läuft um dieses Datum — im Voraus zeichnen!</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Kaiba-Geburtstag 25. Oktober einplanen</div><div class="task-meta"><span class="badge b-purple">YGO-Events</span><span class="badge b-gray">jährlich</span></div><div class="task-note">Größter Kaiba-Posting-Tag im Fandom — Artwork vorbereiten</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="setup"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Anime-Saisonstart-Erinnerung setzen (Jan/Apr/Jul/Okt)</div><div class="task-meta"><span class="badge b-coral">Fandoms</span><span class="badge b-gray">4× im Jahr</span></div><div class="task-note">Anitrendz.net checken · 1–2 neue Shows mit ansprechendem Design raussuchen</div></div></div>
+  </div>
+</div>
+
+<!-- WEEKLY -->
+<div id="weekly" class="section">
+  <div class="section-head">
+    <h2>Wöchentliche Aufgaben</h2>
+    <p>Jeden Montag neu starten. Einfach abhaken was erledigt ist.</p>
+    <div class="sec-prog-wrap"><div class="sec-prog-bar-outer"><div class="sec-prog-bar" id="pb-weekly" style="width:0%"></div></div><span class="sec-prog-label" id="pl-weekly">0%</span></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Montag — Post-Tag</div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Tumblr: fertiges Artwork oder WIP posten</div><div class="task-meta"><span class="badge b-blue">Tumblr</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Instagram: Artwork als Reel (Timelapse) oder Karussell</div><div class="task-meta"><span class="badge b-pink">Instagram</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Pinterest: 3–5 Pins aus Backlog hochladen</div><div class="task-meta"><span class="badge b-amber">Pinterest</span><span class="badge b-gray">20 min</span></div><div class="task-note">Dateien vorher umbenennen: yugioh-kaiba-fan-art-digital.jpg</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Buffer: Mi + Fr Posts vorplanen</div><div class="task-meta"><span class="badge b-blue">Buffer</span><span class="badge b-gray">15 min</span></div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Dienstag — Zeichentag</div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Frei zeichnen, Skizzen, Shading üben</div><div class="task-meta"><span class="badge b-gray">kein Post-Druck</span></div><div class="task-note">WIP-Screenshot für Mittwoch-Content speichern</div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Mittwoch — Engagement-Tag</div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Bluesky: WIP oder casualer Post</div><div class="task-meta"><span class="badge b-teal">Bluesky</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Tumblr: 2–3 Fandom-Posts rebloggen + Kommentare beantworten</div><div class="task-meta"><span class="badge b-blue">Tumblr</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">DMs / Commission-Anfragen beantworten</div><div class="task-meta"><span class="badge b-teal">Commissions</span><span class="badge b-gray">15–20 min</span></div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Donnerstag — Stream-Nacht</div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">„Going live"-Post auf Tumblr + Bluesky (30 min vorher)</div><div class="task-meta"><span class="badge b-blue">Tumblr</span><span class="badge b-teal">Bluesky</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Twitch-Stream 22–01 Uhr</div><div class="task-meta"><span class="badge b-pink">Twitch</span></div><div class="task-note">Topic-Zettel bereit haben · VOD lädt automatisch zu YouTube hoch</div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Freitag — Post-Tag</div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Stream-Ergebnis → Tumblr + Instagram</div><div class="task-meta"><span class="badge b-blue">Tumblr</span><span class="badge b-pink">Instagram</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Pinterest: weitere 3–5 Pins aus Backlog</div><div class="task-meta"><span class="badge b-amber">Pinterest</span><span class="badge b-gray">20 min</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Wochenend-Stream-Thema planen</div><div class="task-meta"><span class="badge b-pink">Twitch</span><span class="badge b-gray">10 min</span></div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Wochenende — optional Stream 13–16 Uhr</div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Stream ankündigen 1h vorher (Tumblr + Bluesky)</div><div class="task-meta"><span class="badge b-pink">Twitch</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Nach Stream: fertiges Artwork überall posten</div><div class="task-meta"><span class="badge b-blue">Tumblr</span><span class="badge b-pink">Instagram</span><span class="badge b-teal">Bluesky</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="weekly"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Sonntagabend: nächste Woche in Buffer vorplanen (~30 min)</div><div class="task-meta"><span class="badge b-blue">Buffer</span></div></div></div>
+  </div>
+</div>
+
+<!-- PLATFORMS -->
+<div id="platforms" class="section">
+  <div class="section-head">
+    <h2>Plattform-Optimierungen</h2>
+    <p>Einmalige und wiederkehrende Aufgaben pro Plattform.</p>
+    <div class="sec-prog-wrap"><div class="sec-prog-bar-outer"><div class="sec-prog-bar" id="pb-platforms" style="width:0%"></div></div><span class="sec-prog-label" id="pl-platforms">0%</span></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Instagram</div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Bio aktualisieren: Carrd-Link + „commissions open"</div><div class="task-meta"><span class="badge b-pink">Instagram</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Erstes Reel mit Timelapse-Prozess erstellen</div><div class="task-meta"><span class="badge b-pink">Instagram</span></div><div class="task-note">Reel erstellen → Musik-Icon → „Trending"-Tab → ↗-Pfeil = aktuell aufsteigend</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">3 Hashtag-Sets anlegen und zwischen Posts rotieren</div><div class="task-meta"><span class="badge b-pink">Instagram</span></div><div class="task-note">Set A: Fandom · Set B: Art-Prozess · Set C: Commissions</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Stories-Routine einführen (2–3×/Woche)</div><div class="task-meta"><span class="badge b-pink">Instagram</span></div><div class="task-note">Umfragen · WIP-Sneak-Peek · „X Commission-Slots noch frei"</div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Tumblr</div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Angepinnten „Commissions open/closed"-Post anlegen</div><div class="task-meta"><span class="badge b-blue">Tumblr</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Tags in Post-Body einfügen (nicht nur Tag-Feld)</div><div class="task-meta"><span class="badge b-blue">Tumblr</span></div><div class="task-note">Tumblr-Suche liest beide Stellen — mehr Sichtbarkeit</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Violetshipping / Puppyshipping Week verfolgen</div><div class="task-meta"><span class="badge b-blue">Tumblr</span></div><div class="task-note">Tag #violetshippingweek beobachten — Artwork im Voraus vorbereiten</div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Pinterest SEO</div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Alle Backlog-Bilder vor Upload umbenennen</div><div class="task-meta"><span class="badge b-amber">Pinterest</span></div><div class="task-note">Format: yugioh-kaiba-seto-digital-fan-art.jpg — Pinterest + Google lesen Dateinamen</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Alt-Text bei jedem Pin ausfüllen (unter 125 Zeichen)</div><div class="task-meta"><span class="badge b-amber">Pinterest</span></div><div class="task-note">„Digitale Fan Art von Kaiba Seto aus Yu-Gi-Oh, sauberes Lineart, blaue Farbpalette"</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Pin-Beschreibungsformel nutzen (100–200 Zeichen)</div><div class="task-meta"><span class="badge b-amber">Pinterest</span></div><div class="task-note">Was es ist + Charakter/Serie + Stil + optionaler CTA</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Bilder immer im 2:3-Format hochladen</div><div class="task-meta"><span class="badge b-amber">Pinterest</span></div><div class="task-note">Vertikal performen drastisch besser als quadratisch oder Querformat</div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Bluesky</div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Artist Starter Pack mit YGO-Künstler:innen erstellen</div><div class="task-meta"><span class="badge b-teal">Bluesky</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="platforms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Alt-Text bei jedem Bild-Post ausfüllen</div><div class="task-meta"><span class="badge b-teal">Bluesky</span></div></div></div>
+  </div>
+</div>
+
+<!-- COMMISSIONS -->
+<div id="commissions" class="section">
+  <div class="section-head">
+    <h2>Commissions</h2>
+    <p>Preise, TOS, Workflow und Marketing für deine Auftragsarbeiten.</p>
+    <div class="sec-prog-wrap"><div class="sec-prog-bar-outer"><div class="sec-prog-bar" id="pb-commissions" style="width:0%"></div></div><span class="sec-prog-label" id="pl-commissions">0%</span></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Preisstruktur</div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Preise für alle 5 Tiers festlegen</div><div class="task-meta"><span class="badge b-teal">Commissions</span></div><div class="task-note">Skizze (mit Ref) €15–25 · Flat Color €35–55 · Clean Lineart + Flat €55–80 · Full Color €90–140</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Add-on-Preise festlegen (+Charakter, +Hintergrund)</div><div class="task-meta"><span class="badge b-teal">Commissions</span></div><div class="task-note">Zusatz-Charakter: +50% des Grundpreises</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Beispiel-Artwork für jeden Tier bereitstellen</div><div class="task-meta"><span class="badge b-teal">Commissions</span></div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">TOS & Workflow</div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Zahlungsablauf: 50% upfront, 50% bei Lieferung</div><div class="task-meta"><span class="badge b-teal">Commissions</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Revisions-Policy klar definieren (1–2 kleine inklusive)</div><div class="task-meta"><span class="badge b-teal">Commissions</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">„Kein KI-Training"-Klausel in TOS aufnehmen</div><div class="task-meta"><span class="badge b-teal">Commissions</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">DSGVO-Hinweis im Aufnahmeformular ergänzen</div><div class="task-meta"><span class="badge b-teal">Commissions</span><span class="badge b-gray">Deutschland</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Trello-Board aktiv nutzen + Link an Kunden schicken</div><div class="task-meta"><span class="badge b-teal">Commissions</span></div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Marketing</div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Commission-Status immer aktuell halten (Carrd + Tumblr-Pin)</div><div class="task-meta"><span class="badge b-teal">Commissions</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">1× pro Stream Commission-Slots erwähnen</div><div class="task-meta"><span class="badge b-pink">Twitch</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="commissions"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Instagram-Story „X Slots noch frei" wenn offen</div><div class="task-meta"><span class="badge b-pink">Instagram</span></div></div></div>
+  </div>
+</div>
+
+<!-- FANDOMS -->
+<div id="fandoms" class="section">
+  <div class="section-head">
+    <h2>Fandoms & Crossovers</h2>
+    <p>Welche Artworks du als nächstes angehen solltest — von aktuell trending bis mittelfristig.</p>
+    <div class="sec-prog-wrap"><div class="sec-prog-bar-outer"><div class="sec-prog-bar" id="pb-fandoms" style="width:0%"></div></div><span class="sec-prog-label" id="pl-fandoms">0%</span></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Sofort zeichnen — aktuell trending</div>
+    <div class="task" onclick="toggle(this)" data-s="fandoms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Witch Hat Atelier: ein Artwork erstellen</div><div class="task-meta"><span class="badge b-coral">#1 Frühling 2026</span><span class="badge b-gray">Tumblr + IG</span></div><div class="task-note">Lineart-lastiger Stil passt perfekt — großer Moment gerade</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="fandoms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">JJK S3: Artwork beim Hype-Start</div><div class="task-meta"><span class="badge b-coral">2026</span><span class="badge b-gray">IG + Tumblr</span></div><div class="task-note">Auch 1 Artwork im richtigen Moment = hunderte neue Augen</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="fandoms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Hazbin Hotel: ein Artwork ausprobieren</div><div class="task-meta"><span class="badge b-pink">Tumblr + IG</span></div><div class="task-note">Brückt Anime- und Cartoon-Publikum — Alastor/Vox hat violetshipping-adjacent Energie</div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Mittelfristig erkunden</div>
+    <div class="task" onclick="toggle(this)" data-s="fandoms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Frieren S2: Artwork vorbereiten</div><div class="task-meta"><span class="badge b-coral">2026 angekündigt</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="fandoms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Fullmetal Alchemist: ein Artwork erstellen</div><div class="task-meta"><span class="badge b-blue">Tumblr</span></div><div class="task-note">Roy/Ed-Shipper überschneiden sich stark mit Kaiba/Jou-Fans</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="fandoms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Good Omens: ein Artwork ausprobieren</div><div class="task-meta"><span class="badge b-blue">Tumblr</span></div><div class="task-note">Publikum kauft gerne Commissions — guter Kanal für neue Kunden</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="fandoms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Style-Crossover: YGO-Charakter in Trending-Show-Stil</div><div class="task-meta"><span class="badge b-gray">beide Plattformen</span></div><div class="task-note">z.B. „Kaiba in der Witch Hat Atelier-Welt" — zwei Fandoms sehen denselben Post</div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Recherche-Routine</div>
+    <div class="task" onclick="toggle(this)" data-s="fandoms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Anitrendz.net bookmarken + wöchentlich 5 min checken</div><div class="task-meta"><span class="badge b-gray">wöchentlich</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="fandoms"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">2–3 Fandom-Tumblr-Blogs pro Serie folgen</div><div class="task-meta"><span class="badge b-blue">Tumblr</span></div></div></div>
+  </div>
+</div>
+
+<!-- TWITCH -->
+<div id="twitch" class="section">
+  <div class="section-head">
+    <h2>Twitch</h2>
+    <p>Technisches Setup, Stream-Vorbereitung und Content-Konzepte.</p>
+    <div class="sec-prog-wrap"><div class="sec-prog-bar-outer"><div class="sec-prog-bar" id="pb-twitch" style="width:0%"></div></div><span class="sec-prog-label" id="pl-twitch">0%</span></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Technisches Setup</div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">PNGtuber in Veadotube mini + OBS einrichten</div><div class="task-meta"><span class="badge b-gray">1× einmalig</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">DMCA-sichere Musik testen (Twitch Soundtrack)</div><div class="task-meta"><span class="badge b-gray">1× einmalig</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Twitch → YouTube VOD-Auto-Upload einrichten + testen</div><div class="task-meta"><span class="badge b-gray">1× einmalig</span></div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Vor jedem Stream</div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Topic-Zettel (5–8 Themen) sichtbar bereit haben</div><div class="task-meta"><span class="badge b-gray">vor jedem Stream</span></div><div class="task-note">Zweiter Monitor oder Post-It — bei Stille einfach ein Thema nehmen</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Stream ankündigen 30 min vorher (Tumblr + Bluesky)</div><div class="task-meta"><span class="badge b-gray">vor jedem Stream</span></div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Stream-Konzepte ausprobieren</div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">„YGO-Outfits ranken während ich zeichne" testen</div><div class="task-meta"><span class="badge b-purple">YGO-Thema</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">„Shading-Session — Chat entscheidet Lichtquelle" ausprobieren</div><div class="task-meta"><span class="badge b-gray">Art-Prozess</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Tomodachi Life 2: Insel mit YGO-Charakteren befüllen</div><div class="task-meta"><span class="badge b-gray">Cozy Game</span></div><div class="task-note">Screenshots werden zu Tumblr-Content — doppelt genutzt</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">„Ich lerne Blender live" als Stream-Serie starten</div><div class="task-meta"><span class="badge b-gray">Blender-Serie</span></div><div class="task-note">Skill-Learning live = sehr schaubar + baut 3D-Vtuber-Weg vor</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Nach Stream: anderen kleinen Anime-Artist raiden</div><div class="task-meta"><span class="badge b-gray">Community</span></div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Besten Stream-Clip auf Tumblr / Bluesky posten</div><div class="task-meta"><span class="badge b-blue">Tumblr</span><span class="badge b-teal">Bluesky</span></div></div></div>
+  </div>
+  <div class="group">
+    <div class="group-title">Langfristig: Vtuber-Upgrade</div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">VRoid Studio installieren + erkunden</div><div class="task-meta"><span class="badge b-purple">3D Vtuber</span><span class="badge b-gray">wenn bereit</span></div><div class="task-note">Kostenlos · Anime-Stil · VRM-Format → funktioniert mit VTube Studio</div></div></div>
+    <div class="task" onclick="toggle(this)" data-s="twitch"><div class="cb"><svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg></div><div class="task-body"><div class="task-title">Blender: eigenen 3D-Avatar modellieren</div><div class="task-meta"><span class="badge b-purple">3D Vtuber</span><span class="badge b-gray">Langzeitprojekt</span></div></div></div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+const KEY = 'cplan_v2';
+let S = {};
+try { S = JSON.parse(localStorage.getItem(KEY)||'{}'); } catch(e){}
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+function toggle(el){
+  const k = el.dataset.key;
+  S[k] = !S[k];
+  render(el, S[k]);
+  save();
+  updateAll();
+}
+
+function render(el, done){
+  el.classList.toggle('done', done);
+  el.querySelector('.cb').classList.toggle('on', done);
+}
+
+function keyOf(el){
+  return el.dataset.s + '::' + el.querySelector('.task-title').textContent.trim().slice(0,50);
+}
+
+function init(){
+  document.querySelectorAll('.task').forEach(t => {
+    const k = keyOf(t);
+    t.dataset.key = k;
+    if(S[k]) render(t, true);
+  });
+  updateAll();
+}
+
+const SECS = ['setup','weekly','platforms','commissions','fandoms','twitch'];
+
+function updateAll(){
+  let td=0, ta=0;
+  SECS.forEach(s => {
+    const tasks = document.querySelectorAll(`.task[data-s="${s}"]`);
+    let done = 0;
+    tasks.forEach(t => { if(S[t.dataset.key]) done++; });
+    const pct = tasks.length ? Math.round(done/tasks.length*100) : 0;
+    const pb = document.getElementById('pb-'+s);
+    const pl = document.getElementById('pl-'+s);
+    const np = document.getElementById('np-'+s);
+    if(pb) pb.style.width = pct+'%';
+    if(pl) pl.textContent = pct+'%';
+    if(np) np.textContent = pct+'%';
+    td += done; ta += tasks.length;
+  });
+  const total = ta ? Math.round(td/ta*100) : 0;
+  document.getElementById('total-bar').style.width = total+'%';
+  document.getElementById('total-count').textContent = td+' / '+ta+' erledigt';
+}
+
+function show(id, el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+function resetAll(){
+  if(!confirm('Alle Häkchen zurücksetzen?')) return;
+  S={};
+  save();
+  document.querySelectorAll('.task').forEach(t=>render(t,false));
+  updateAll();
+}
+
+init();
+</script>
+</body>
+</html>
