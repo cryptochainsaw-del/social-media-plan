@@ -1,0 +1,240 @@
+
+<h2 class="sr-only">Interaktiver Tagesplan mit Checklisten für WFH-Tage, Bürotage und Wochenende, plus Garten-Fortschritt und Admin-Aufgaben</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.wrap{padding:1rem 0}
+.top-tabs{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap}
+.ttab{padding:6px 16px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:transparent;font-size:13px;cursor:pointer;color:var(--color-text-secondary);transition:all .15s}
+.ttab.on{background:var(--color-background-secondary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-primary)}
+.page{display:none}.page.on{display:block}
+.section-title{font-size:12px;font-weight:500;color:var(--color-text-tertiary);letter-spacing:.6px;text-transform:uppercase;margin:1.25rem 0 6px}
+.section-title:first-child{margin-top:0}
+.item{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:var(--border-radius-md);cursor:pointer;transition:background .1s;border:0.5px solid transparent;margin-bottom:3px}
+.item:hover{background:var(--color-background-secondary)}
+.item.done .itext{text-decoration:line-through;color:var(--color-text-tertiary)}
+.item.done .isub{text-decoration:line-through;color:var(--color-text-tertiary)}
+.cb{width:16px;height:16px;min-width:16px;border-radius:4px;border:0.5px solid var(--color-border-primary);display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;background:transparent}
+.item.done .cb{background:var(--color-background-success);border-color:var(--color-border-success)}
+.check{font-size:11px;color:var(--color-text-success);display:none}
+.item.done .check{display:block}
+.itext{font-size:13px;color:var(--color-text-primary);line-height:1.4}
+.isub{font-size:11px;color:var(--color-text-secondary);margin-top:2px;line-height:1.4}
+.badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:99px;margin-left:5px;vertical-align:middle}
+.b-health{background:var(--color-background-warning);color:var(--color-text-warning)}
+.b-dog{background:var(--color-background-success);color:var(--color-text-success)}
+.b-ital{background:#EEEDFE;color:#3C3489}
+.b-work{background:var(--color-background-info);color:var(--color-text-info)}
+.progress-bar{height:4px;background:var(--color-border-tertiary);border-radius:99px;margin-bottom:1.25rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--color-text-success);border-radius:99px;transition:width .3s}
+.progress-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:6px}
+.reset-btn{font-size:12px;color:var(--color-text-tertiary);background:transparent;border:none;cursor:pointer;padding:0;text-decoration:underline;margin-top:8px}
+.reset-btn:hover{color:var(--color-text-secondary)}
+.divider{height:0.5px;background:var(--color-border-tertiary);margin:1rem 0}
+.garden-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px}
+.gbox{border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);padding:8px 6px;text-align:center;font-size:11px;color:var(--color-text-secondary);cursor:pointer;transition:all .15s;background:var(--color-background-primary)}
+.gbox.done{background:var(--color-background-success);border-color:var(--color-border-success);color:var(--color-text-success)}
+.gbox.mowed{background:var(--color-background-warning);border-color:var(--color-border-warning);color:var(--color-text-warning)}
+.gbox.pending{background:var(--color-background-primary)}
+.gbox-icon{font-size:16px;display:block;margin-bottom:2px}
+.garden-legend{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap}
+.gl{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
+.gldot{width:8px;height:8px;border-radius:2px}
+</style>
+
+<div class="wrap">
+
+<div class="top-tabs">
+  <button class="ttab on" onclick="showPage('wfh',this)">🏠 WFH — Mo/Do/Fr</button>
+  <button class="ttab" onclick="showPage('office',this)">🏢 Büro — Di/Mi</button>
+  <button class="ttab" onclick="showPage('weekend',this)">🌅 Wochenende</button>
+  <button class="ttab" onclick="showPage('garden',this)">🌱 Garten</button>
+  <button class="ttab" onclick="showPage('admin',this)">📋 Admin</button>
+</div>
+
+<div id="wfh" class="page on">
+  <div class="progress-label" id="wfh-lbl">0 von 15 erledigt</div>
+  <div class="progress-bar"><div class="progress-fill" id="wfh-bar" style="width:0%"></div></div>
+
+  <div class="section-title">🌅 Morgen</div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-health">💊</span>Ohrentropfen — vor dem Handy</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-health">💊</span>Vitamine — vor dem Handy</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-dog">🐶</span>Morgenspaziergang — angezogen, nicht Schlafanzug</div><div class="isub">1 Trainingsmoment: Trick oder Menschenmenge</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-dog">🐶</span>Hund bürsten — vor dem Schuhe ausziehen</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🛏️ Bett machen — sofort nach dem Reinkommen</div><div class="isub">90 Sekunden. Verhindert Rückfall ins Bett.</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">☕ Frühstück + Kaffee — Pflicht</div></div></div>
+
+  <div class="section-title">💻 Arbeit</div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-work">💻</span>Laptop nur am Schreibtisch — nie im Bett</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">Arbeitsblock 09:00 – 12:30</div></div></div>
+
+  <div class="section-title">🍜 Mittagspause</div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🔔 Alarm "girl get up" — 12:30</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-ital">🇮🇹</span>Italienisch 15 min — während des Essens</div><div class="isub">Podcast / Duolingo / YouTube — kein Extra-Aufwand</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">Arbeitsblock 13:00 – 17:00</div></div></div>
+
+  <div class="section-title">🌆 Abend</div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-dog">🐶</span>Abendspaziergang 17:00 — 40–60 min + Training</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🏃 Fitness — 30 min</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🏠 Eine Haushalts-Kleinaufgabe</div><div class="isub">Wäschekorb in den TV-Raum tragen zählt auch.</div></div></div>
+
+  <div class="section-title">🌙 Nacht</div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-health">💊</span>Ohrentropfen</div></div></div>
+  <div class="item" onclick="toggle(this,'wfh')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🧴 Gesichtsroutine</div></div></div>
+
+  <button class="reset-btn" onclick="reset('wfh')">Tag zurücksetzen</button>
+</div>
+
+<div id="office" class="page">
+  <div class="progress-label" id="office-lbl">0 von 10 erledigt</div>
+  <div class="progress-bar"><div class="progress-fill" id="office-bar" style="width:0%"></div></div>
+
+  <div class="section-title">🌅 Morgen</div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-health">💊</span>Ohrentropfen — vor dem Handy</div></div></div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-health">💊</span>Vitamine — neben den Schlüsseln</div></div></div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-dog">🐶</span>Kurzer Spaziergang + bürsten + 1 Training</div></div></div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">☕ Frühstück vor dem Büro</div></div></div>
+
+  <div class="section-title">🚌 Pendelweg</div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-ital">🇮🇹</span>Italienisch im Zug/Bus</div><div class="isub">Podcast oder Lesson — kein Extra-Aufwand</div></div></div>
+
+  <div class="section-title">🏢 Nach der Arbeit</div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">✅ Eine Admin-Aufgabe vor dem Entspannen</div><div class="isub">Garantie, Bilderrahmen, offene Mail — nur eine.</div></div></div>
+
+  <div class="section-title">🌆 Abend</div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-dog">🐶</span>Abendspaziergang 21:00 — 40–60 min + Training</div><div class="isub">Abends mehr Menschen = gut für Menschenmenge-Training</div></div></div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🏠 Optional: eine Kleinaufgabe</div></div></div>
+
+  <div class="section-title">🌙 Nacht</div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-health">💊</span>Ohrentropfen</div></div></div>
+  <div class="item" onclick="toggle(this,'office')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🧴 Gesichtsroutine</div></div></div>
+
+  <button class="reset-btn" onclick="reset('office')">Tag zurücksetzen</button>
+</div>
+
+<div id="weekend" class="page">
+  <div class="progress-label" id="weekend-lbl">0 von 9 erledigt</div>
+  <div class="progress-bar"><div class="progress-fill" id="weekend-bar" style="width:0%"></div></div>
+
+  <div class="section-title">🌅 Morgen (flexibel)</div>
+  <div class="item" onclick="toggle(this,'weekend')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-health">💊</span>Ohrentropfen — vor dem Handy</div></div></div>
+  <div class="item" onclick="toggle(this,'weekend')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-health">💊</span>Vitamine</div></div></div>
+  <div class="item" onclick="toggle(this,'weekend')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">☕ Frühstück</div></div></div>
+  <div class="item" onclick="toggle(this,'weekend')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-dog">🐶</span>Spaziergang — länger, entspannter + Trainingsfokus</div><div class="isub">Guter Tag für neue Tricks oder längere Menschenmenge-Session</div></div></div>
+  <div class="item" onclick="toggle(this,'weekend')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-dog">🐶</span>Hund bürsten</div></div></div>
+
+  <div class="section-title">🌻 Nachmittag</div>
+  <div class="item" onclick="toggle(this,'weekend')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🌱 Garten — 1 Abschnitt, 30–45 min</div><div class="isub">Nur bei gutem Wetter. Nur ein Abschnitt, nicht mehr.</div></div></div>
+  <div class="item" onclick="toggle(this,'weekend')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🏠 Optional: Haushalt / Wäsche / Fensterrahmen</div></div></div>
+
+  <div class="section-title">🌙 Abend</div>
+  <div class="item" onclick="toggle(this,'weekend')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-ital">🇮🇹</span>Italienisch — auch 10 min zählen</div></div></div>
+  <div class="item" onclick="toggle(this,'weekend')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext"><span class="badge b-health">💊</span>Ohrentropfen + Gesichtsroutine</div></div></div>
+
+  <button class="reset-btn" onclick="reset('weekend')">Tag zurücksetzen</button>
+</div>
+
+<div id="garden" class="page">
+  <div class="progress-label" id="garden-lbl">10 von 15 Abschnitten begonnen</div>
+  <div class="progress-bar"><div class="progress-fill" id="garden-bar" style="width:67%"></div></div>
+
+  <div class="garden-grid" id="garden-grid"></div>
+
+  <div class="garden-legend">
+    <span class="gl"><span class="gldot" style="background:var(--color-text-success)"></span>Fertig geputzt</span>
+    <span class="gl"><span class="gldot" style="background:var(--color-text-warning)"></span>Gemäht</span>
+    <span class="gl"><span class="gldot" style="background:var(--color-border-primary)"></span>Noch offen</span>
+  </div>
+
+  <div class="divider"></div>
+  <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.6">
+    <strong style="font-weight:500">Abschnitt 15</strong> = Erdhaufen — mit Bruder, Hund innen lassen, mittags (11–15 Uhr), von außen nach innen arbeiten.<br>
+    <strong style="font-weight:500">Tipp:</strong> Pro Wochenend-Session max. 1–2 Abschnitte. Du hast die Hälfte schon geschafft 🎉
+  </div>
+</div>
+
+<div id="admin" class="page">
+  <div class="progress-label" id="admin-lbl">0 von 7 erledigt</div>
+  <div class="progress-bar"><div class="progress-fill" id="admin-bar" style="width:0%"></div></div>
+
+  <div class="section-title">📋 Offene Aufgaben</div>
+  <div class="item" onclick="toggle(this,'admin')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🦷 Oral-B Garantie — service.oralb.com</div><div class="isub">Seriennummer von der Unterseite + Kaufbeleg. Kein Gang in den Keller nötig.</div></div></div>
+  <div class="item" onclick="toggle(this,'admin')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">📏 Bilderrahmen ausmessen (Flur)</div><div class="isub">Maßband, 3 Minuten, in Handynotizen schreiben.</div></div></div>
+  <div class="item" onclick="toggle(this,'admin')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🖨️ Bilder drucken (A4 Drucker)</div><div class="isub">Dateien vorbereiten, einfach drucken — Qualität egal für jetzt.</div></div></div>
+  <div class="item" onclick="toggle(this,'admin')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🖼️ Bilder im Flur tauschen</div><div class="isub">Leiter holen, alle Rahmen in einer Session — nicht einzeln.</div></div></div>
+  <div class="item" onclick="toggle(this,'admin')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">🖼️ Standardbild im Wohnzimmer tauschen</div></div></div>
+  <div class="item" onclick="toggle(this,'admin')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">📄 Mängelanzeige Ratten an Verpächter</div><div class="isub">Grünflächenamt / Liegenschaftsamt — schriftlich, damit du auf der sicheren Seite bist.</div></div></div>
+  <div class="item" onclick="toggle(this,'admin')"><div class="cb"><i class="ti ti-check check"></i></div><div><div class="itext">📱 Social Media Plan importieren + in Tagesplan einbauen</div></div></div>
+
+  <button class="reset-btn" onclick="reset('admin')">Zurücksetzen</button>
+</div>
+
+</div>
+
+<script>
+const totals={wfh:15,office:10,weekend:9,admin:7};
+
+const gardenState=[
+  {label:'A1',state:'done'},{label:'A2',state:'done'},{label:'A3',state:'done'},
+  {label:'A4',state:'done'},{label:'A5',state:'done'},
+  {label:'A6',state:'mowed'},{label:'A7',state:'mowed'},{label:'A8',state:'mowed'},
+  {label:'A9',state:'mowed'},{label:'A10',state:'mowed'},
+  {label:'A11',state:'pending'},{label:'A12',state:'pending'},{label:'A13',state:'pending'},
+  {label:'A14',state:'pending'},{label:'A15',state:'pending — Erdhaufen 🤝'}
+];
+
+const stateOrder=['pending','mowed','done'];
+const stateLabel={'done':'✅','mowed':'〰️','pending':'○'};
+
+function buildGarden(){
+  const g=document.getElementById('garden-grid');
+  g.innerHTML='';
+  gardenState.forEach((s,i)=>{
+    const d=document.createElement('div');
+    d.className='gbox '+s.state;
+    d.innerHTML=`<span class="gbox-icon">${stateLabel[s.state]}</span>${s.label.replace(' — Erdhaufen 🤝','')}`
+    if(i===14)d.innerHTML=`<span class="gbox-icon">${stateLabel[s.state]}</span>A15<br><span style="font-size:9px">Erdhaufen</span>`
+    d.onclick=()=>{
+      const idx=stateOrder.indexOf(s.state);
+      s.state=stateOrder[(idx+1)%3];
+      buildGarden();updateGardenProgress();
+    };
+    g.appendChild(d);
+  });
+}
+
+function updateGardenProgress(){
+  const done=gardenState.filter(s=>s.state==='done').length;
+  const started=gardenState.filter(s=>s.state!=='pending').length;
+  document.getElementById('garden-lbl').textContent=`${done} fertig geputzt · ${started} von 15 begonnen`;
+  document.getElementById('garden-bar').style.width=(started/15*100)+'%';
+}
+
+function toggle(el,page){
+  el.classList.toggle('done');
+  updateProgress(page);
+}
+
+function updateProgress(page){
+  const items=document.getElementById(page).querySelectorAll('.item');
+  const done=[...items].filter(i=>i.classList.contains('done')).length;
+  const total=items.length;
+  document.getElementById(page+'-lbl').textContent=`${done} von ${total} erledigt`;
+  document.getElementById(page+'-bar').style.width=(done/total*100)+'%';
+}
+
+function reset(page){
+  document.getElementById(page).querySelectorAll('.item').forEach(i=>i.classList.remove('done'));
+  updateProgress(page);
+}
+
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ttab').forEach(t=>t.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  el.classList.add('on');
+}
+
+buildGarden();
+updateGardenProgress();
+</script>
