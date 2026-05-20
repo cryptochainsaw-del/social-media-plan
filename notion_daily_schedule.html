@@ -7,123 +7,125 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #F5F0E8;
-  --surface: #FDFAF4;
-  --border: #DDD5C4;
-  --border-light: #EAE4D8;
-  --text: #2A2318;
-  --text-muted: #8A7E6E;
-  --text-faint: #B5AA99;
-  --green: #3D6B4F;
-  --green-bg: #EAF2ED;
-  --green-light: #C5DDD0;
-  --amber: #9C6A1A;
-  --amber-bg: #FDF3E0;
-  --blue: #1E4D7B;
-  --blue-bg: #E8F0F9;
-  --purple: #5B3F8C;
-  --purple-bg: #F0EAFA;
-  --radius: 10px;
-  --radius-sm: 6px;
+  --bg:#F5F0E8;--surface:#FDFAF4;--border:#DDD5C4;--border-light:#EAE4D8;
+  --text:#2A2318;--text-muted:#8A7E6E;--text-faint:#B5AA99;
+  --green:#3D6B4F;--green-bg:#EAF2ED;--green-light:#C5DDD0;
+  --amber:#9C6A1A;--amber-bg:#FDF3E0;
+  --blue:#1E4D7B;--blue-bg:#E8F0F9;
+  --purple:#5B3F8C;--purple-bg:#F0EAFA;
+  --radius:10px;--radius-sm:6px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; }
-.app { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh}
+.app{max-width:680px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.header{margin-bottom:2rem}
+.header h1{font-family:'Fraunces',serif;font-size:28px;font-weight:400;letter-spacing:-.5px;margin-bottom:2px}
+.header .date{font-size:13px;color:var(--text-muted);font-weight:300}
+.nav{display:flex;gap:4px;background:var(--surface);border:.5px solid var(--border);border-radius:var(--radius);padding:4px;margin-bottom:1.5rem;flex-wrap:wrap}
+.nav-btn{flex:1;min-width:80px;padding:7px 8px;border:none;border-radius:var(--radius-sm);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-muted);cursor:pointer;transition:all .15s;text-align:center;white-space:nowrap}
+.nav-btn.active{background:var(--bg);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.page{display:none}.page.active{display:block}
+.progress-wrap{background:var(--surface);border:.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:1.25rem;display:flex;align-items:center;gap:14px}
+.progress-info{flex:1}
+.progress-label{font-size:12px;color:var(--text-muted);margin-bottom:6px;font-weight:300}
+.progress-bar{height:5px;background:var(--border-light);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-pct{font-family:'Fraunces',serif;font-size:22px;color:var(--green);min-width:40px;text-align:right}
+.section-label{font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);margin:1.25rem 0 4px}
+.section-label:first-of-type{margin-top:0}
 
-.header { margin-bottom: 2rem; }
-.header h1 { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; letter-spacing: -.5px; margin-bottom: 2px; }
-.header .date { font-size: 13px; color: var(--text-muted); font-weight: 300; }
+/* Task item */
+.item{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-radius:var(--radius-sm);border:.5px solid transparent;margin-bottom:2px;position:relative;transition:background .1s}
+.item:hover{background:var(--surface);border-color:var(--border-light)}
+.item.drag-over{border-color:var(--green);border-style:dashed;background:var(--green-bg)}
+.item.dragging{opacity:.4}
 
-.nav { display: flex; gap: 4px; background: var(--surface); border: .5px solid var(--border); border-radius: var(--radius); padding: 4px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-.nav-btn { flex: 1; min-width: 80px; padding: 7px 8px; border: none; border-radius: var(--radius-sm); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text-muted); cursor: pointer; transition: all .15s; text-align: center; white-space: nowrap; }
-.nav-btn.active { background: var(--bg); color: var(--text); font-weight: 500; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.drag-handle{cursor:grab;color:var(--text-faint);font-size:14px;padding:2px 2px 0;line-height:1;flex-shrink:0;margin-top:2px;user-select:none;transition:color .15s}
+.drag-handle:hover{color:var(--text-muted)}
+.drag-handle:active{cursor:grabbing}
 
-.page { display: none; }
-.page.active { display: block; }
+.cb{width:17px;height:17px;min-width:17px;border-radius:4px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all .15s;cursor:pointer;flex-shrink:0}
+.item.done .cb{background:var(--green);border-color:var(--green)}
+.cb svg{display:none}.item.done .cb svg{display:block}
 
-.progress-wrap { background: var(--surface); border: .5px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 14px; }
-.progress-info { flex: 1; }
-.progress-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 300; }
-.progress-bar { height: 5px; background: var(--border-light); border-radius: 99px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--green); border-radius: 99px; transition: width .4s cubic-bezier(.4,0,.2,1); }
-.progress-pct { font-family: 'Fraunces', serif; font-size: 22px; color: var(--green); min-width: 40px; text-align: right; }
+.item-body{flex:1;min-width:0}
+.itext{font-size:13.5px;color:var(--text);line-height:1.4;cursor:pointer;word-break:break-word}
+.item.done .itext{text-decoration:line-through;color:var(--text-faint)}
+.isub{font-size:11.5px;color:var(--text-muted);margin-top:2px;font-weight:300;line-height:1.4}
+.item.done .isub{color:var(--text-faint);text-decoration:line-through}
+.edit-hint{font-size:10px;color:var(--text-faint);margin-top:2px;display:none;font-style:italic}
+.item:hover .edit-hint{display:block}
 
-.section-label { font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--text-faint); margin: 1.25rem 0 4px; }
-.section-label:first-of-type { margin-top: 0; }
+.del-btn{opacity:0;background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:13px;padding:2px 4px;border-radius:4px;transition:all .15s;margin-top:1px;flex-shrink:0;line-height:1}
+.item:hover .del-btn{opacity:1}
+.del-btn:hover{color:#8B2E2E;background:#FAEAEA}
 
-.item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm); border: .5px solid transparent; margin-bottom: 2px; position: relative; }
-.item:hover { background: var(--surface); border-color: var(--border-light); }
-.item:hover .del-btn { opacity: 1; }
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:1px 7px;border-radius:99px;margin-right:5px;letter-spacing:.2px}
+.b-health{background:var(--amber-bg);color:var(--amber)}
+.b-dog{background:var(--green-bg);color:var(--green)}
+.b-ital{background:var(--purple-bg);color:var(--purple)}
+.b-work{background:var(--blue-bg);color:var(--blue)}
 
-.cb { width: 17px; height: 17px; min-width: 17px; border-radius: 4px; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: all .15s; cursor: pointer; flex-shrink: 0; }
-.item.done .cb { background: var(--green); border-color: var(--green); }
-.cb svg { display: none; }
-.item.done .cb svg { display: block; }
+/* Edit mode */
+.edit-form{display:none;flex-direction:column;gap:6px;margin-top:4px}
+.edit-form.visible{display:flex}
+.edit-input{border:none;border-bottom:1.5px solid var(--green);background:transparent;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--text);outline:none;padding:2px 0;width:100%}
+.badge-picker{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px}
+.badge-pick-btn{padding:2px 9px;border-radius:99px;border:.5px solid var(--border);background:transparent;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--text-muted);transition:all .15s}
+.badge-pick-btn:hover{border-color:var(--text-faint)}
+.badge-pick-btn.selected-health{background:var(--amber-bg);color:var(--amber);border-color:var(--amber)}
+.badge-pick-btn.selected-dog{background:var(--green-bg);color:var(--green);border-color:var(--green)}
+.badge-pick-btn.selected-ital{background:var(--purple-bg);color:var(--purple);border-color:var(--purple)}
+.badge-pick-btn.selected-work{background:var(--blue-bg);color:var(--blue);border-color:var(--blue)}
+.edit-actions{display:flex;gap:8px;margin-top:2px}
+.edit-save{font-size:11.5px;background:var(--green);color:#fff;border:none;border-radius:var(--radius-sm);padding:4px 12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.edit-cancel{font-size:11.5px;background:transparent;color:var(--text-muted);border:.5px solid var(--border);border-radius:var(--radius-sm);padding:4px 10px;cursor:pointer;font-family:'DM Sans',sans-serif}
 
-.itext { font-size: 13.5px; color: var(--text); line-height: 1.4; flex: 1; cursor: pointer; transition: color .15s; }
-.item.done .itext { text-decoration: line-through; color: var(--text-faint); }
-.isub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; font-weight: 300; line-height: 1.4; transition: color .15s; }
-.item.done .isub { color: var(--text-faint); text-decoration: line-through; }
+/* Add task */
+.add-input-row{display:none;align-items:flex-start;gap:8px;padding:7px 8px;margin-bottom:2px}
+.add-input-row.visible{display:flex}
+.add-cb-placeholder{width:17px;height:17px;min-width:17px;border-radius:4px;border:1.5px solid var(--border-light);margin-top:2px;flex-shrink:0}
+.add-body{flex:1;display:flex;flex-direction:column;gap:5px}
+.add-input{border:none;border-bottom:1.5px solid var(--green);background:transparent;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--text);outline:none;padding:2px 0;width:100%}
+.add-input::placeholder{color:var(--text-faint);font-weight:300}
+.add-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:var(--radius-sm);margin-top:3px;cursor:pointer;color:var(--text-faint);font-size:13px;font-weight:300;transition:all .15s;border:.5px dashed transparent}
+.add-row:hover{color:var(--text-muted);border-color:var(--border);background:var(--surface)}
+.add-row .plus{font-size:16px;line-height:1}
 
-.del-btn { opacity: 0; background: none; border: none; cursor: pointer; color: var(--text-faint); font-size: 14px; padding: 2px 4px; border-radius: 4px; transition: all .15s; margin-top: 1px; flex-shrink: 0; line-height: 1; }
-.del-btn:hover { color: #8B2E2E; background: #FAEAEA; }
-
-.badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 1px 7px; border-radius: 99px; margin-right: 5px; letter-spacing: .2px; }
-.b-health { background: var(--amber-bg); color: var(--amber); }
-.b-dog { background: var(--green-bg); color: var(--green); }
-.b-ital { background: var(--purple-bg); color: var(--purple); }
-.b-work { background: var(--blue-bg); color: var(--blue); }
-
-/* Add task row */
-.add-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: var(--radius-sm); margin-top: 4px; cursor: pointer; color: var(--text-faint); font-size: 13px; font-weight: 300; transition: all .15s; border: .5px dashed transparent; }
-.add-row:hover { color: var(--text-muted); border-color: var(--border); background: var(--surface); }
-.add-row .plus { font-size: 16px; line-height: 1; color: var(--text-faint); }
-
-.add-input-row { display: none; align-items: flex-start; gap: 10px; padding: 6px 10px; margin-bottom: 2px; }
-.add-input-row.visible { display: flex; }
-.add-cb-placeholder { width: 17px; height: 17px; min-width: 17px; border-radius: 4px; border: 1.5px solid var(--border-light); margin-top: 2px; flex-shrink: 0; }
-.add-input { flex: 1; border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text); outline: none; padding: 0; }
-.add-input::placeholder { color: var(--text-faint); font-weight: 300; }
-
-.divider { height: .5px; background: var(--border-light); margin: 1.25rem 0; }
-
-.reset-btn { font-size: 11.5px; color: var(--text-faint); background: transparent; border: none; cursor: pointer; padding: 6px 0; margin-top: 6px; font-family: 'DM Sans', sans-serif; font-weight: 300; text-decoration: underline; transition: color .15s; }
-.reset-btn:hover { color: var(--text-muted); }
+.divider{height:.5px;background:var(--border-light);margin:1.25rem 0}
+.reset-btn{font-size:11.5px;color:var(--text-faint);background:transparent;border:none;cursor:pointer;padding:6px 0;margin-top:6px;font-family:'DM Sans',sans-serif;font-weight:300;text-decoration:underline;transition:color .15s}
+.reset-btn:hover{color:var(--text-muted)}
 
 /* Garden */
-.garden-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 7px; margin-top: 8px; }
-.gbox { border-radius: var(--radius-sm); border: .5px solid var(--border); padding: 9px 6px 7px; text-align: center; font-size: 11px; color: var(--text-muted); cursor: pointer; transition: all .15s; background: var(--surface); }
-.gbox:hover { border-color: var(--text-faint); }
-.gbox.done { background: var(--green-bg); border-color: var(--green-light); color: var(--green); }
-.gbox.mowed { background: var(--amber-bg); border-color: #E8C987; color: var(--amber); }
-.gbox-icon { font-size: 16px; display: block; margin-bottom: 3px; }
-.garden-legend { display: flex; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
-.gl { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); font-weight: 300; }
-.gldot { width: 8px; height: 8px; border-radius: 2px; }
-.garden-note { margin-top: 14px; padding: 12px 14px; background: var(--surface); border: .5px solid var(--border); border-radius: var(--radius); font-size: 12px; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
-.garden-note strong { font-weight: 500; color: var(--text); }
+.garden-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:8px}
+.gbox{border-radius:var(--radius-sm);border:.5px solid var(--border);padding:9px 6px 7px;text-align:center;font-size:11px;color:var(--text-muted);cursor:pointer;transition:all .15s;background:var(--surface)}
+.gbox:hover{border-color:var(--text-faint)}
+.gbox.done{background:var(--green-bg);border-color:var(--green-light);color:var(--green)}
+.gbox.mowed{background:var(--amber-bg);border-color:#E8C987;color:var(--amber)}
+.gbox-icon{font-size:16px;display:block;margin-bottom:3px}
+.garden-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
+.gl{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted);font-weight:300}
+.gldot{width:8px;height:8px;border-radius:2px}
+.garden-note{margin-top:14px;padding:12px 14px;background:var(--surface);border:.5px solid var(--border);border-radius:var(--radius);font-size:12px;color:var(--text-muted);line-height:1.6;font-weight:300}
+.garden-note strong{font-weight:500;color:var(--text)}
 
 /* Weekly */
-.week-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 6px; }
-.week-table th { text-align: left; font-size: 10px; font-weight: 500; letter-spacing: .8px; text-transform: uppercase; color: var(--text-faint); padding: 0 10px 8px; border-bottom: .5px solid var(--border); }
-.week-table td { padding: 9px 10px; border-bottom: .5px solid var(--border-light); vertical-align: top; font-weight: 300; color: var(--text-muted); }
-.week-table td:first-child { font-weight: 500; color: var(--text); white-space: nowrap; width: 90px; }
-.week-table tr:last-child td { border-bottom: none; }
-
-.rules-list { list-style: none; margin-top: 6px; }
-.rules-list li { padding: 8px 12px; border-left: 2px solid var(--green-light); margin-bottom: 6px; font-size: 13px; color: var(--text-muted); font-weight: 300; line-height: 1.4; background: var(--surface); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-
-.footer { margin-top: 2rem; font-size: 11px; color: var(--text-faint); font-weight: 300; text-align: center; }
+.week-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.week-table th{text-align:left;font-size:10px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--text-faint);padding:0 10px 8px;border-bottom:.5px solid var(--border)}
+.week-table td{padding:9px 10px;border-bottom:.5px solid var(--border-light);vertical-align:top;font-weight:300;color:var(--text-muted)}
+.week-table td:first-child{font-weight:500;color:var(--text);white-space:nowrap;width:90px}
+.week-table tr:last-child td{border-bottom:none}
+.rules-list{list-style:none;margin-top:6px}
+.rules-list li{padding:8px 12px;border-left:2px solid var(--green-light);margin-bottom:6px;font-size:13px;color:var(--text-muted);font-weight:300;line-height:1.4;background:var(--surface);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.footer{margin-top:2rem;font-size:11px;color:var(--text-faint);font-weight:300;text-align:center}
 </style>
 </head>
 <body>
 <div class="app">
-
   <div class="header">
     <h1>Mein Tagesplan</h1>
     <div class="date" id="today-date"></div>
   </div>
-
   <nav class="nav">
     <button class="nav-btn active" onclick="showPage('wfh',this)">🏠 WFH</button>
     <button class="nav-btn" onclick="showPage('office',this)">🏢 Büro</button>
@@ -133,80 +135,38 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
     <button class="nav-btn" onclick="showPage('weekly',this)">📅 Woche</button>
   </nav>
 
-  <!-- WFH -->
   <div id="page-wfh" class="page active">
-    <div class="progress-wrap">
-      <div class="progress-info">
-        <div class="progress-label" id="wfh-label">wird geladen...</div>
-        <div class="progress-bar"><div class="progress-fill" id="wfh-bar" style="width:0%"></div></div>
-      </div>
-      <div class="progress-pct" id="wfh-pct">0%</div>
-    </div>
+    <div class="progress-wrap"><div class="progress-info"><div class="progress-label" id="wfh-label">…</div><div class="progress-bar"><div class="progress-fill" id="wfh-bar" style="width:0%"></div></div></div><div class="progress-pct" id="wfh-pct">0%</div></div>
     <div id="wfh-list"></div>
     <button class="reset-btn" onclick="resetPage('wfh')">Tag zurücksetzen</button>
   </div>
-
-  <!-- OFFICE -->
   <div id="page-office" class="page">
-    <div class="progress-wrap">
-      <div class="progress-info">
-        <div class="progress-label" id="office-label">wird geladen...</div>
-        <div class="progress-bar"><div class="progress-fill" id="office-bar" style="width:0%"></div></div>
-      </div>
-      <div class="progress-pct" id="office-pct">0%</div>
-    </div>
+    <div class="progress-wrap"><div class="progress-info"><div class="progress-label" id="office-label">…</div><div class="progress-bar"><div class="progress-fill" id="office-bar" style="width:0%"></div></div></div><div class="progress-pct" id="office-pct">0%</div></div>
     <div id="office-list"></div>
     <button class="reset-btn" onclick="resetPage('office')">Tag zurücksetzen</button>
   </div>
-
-  <!-- WEEKEND -->
   <div id="page-weekend" class="page">
-    <div class="progress-wrap">
-      <div class="progress-info">
-        <div class="progress-label" id="weekend-label">wird geladen...</div>
-        <div class="progress-bar"><div class="progress-fill" id="weekend-bar" style="width:0%"></div></div>
-      </div>
-      <div class="progress-pct" id="weekend-pct">0%</div>
-    </div>
+    <div class="progress-wrap"><div class="progress-info"><div class="progress-label" id="weekend-label">…</div><div class="progress-bar"><div class="progress-fill" id="weekend-bar" style="width:0%"></div></div></div><div class="progress-pct" id="weekend-pct">0%</div></div>
     <div id="weekend-list"></div>
     <button class="reset-btn" onclick="resetPage('weekend')">Tag zurücksetzen</button>
   </div>
+  <div id="page-admin" class="page">
+    <div class="progress-wrap"><div class="progress-info"><div class="progress-label" id="admin-label">…</div><div class="progress-bar"><div class="progress-fill" id="admin-bar" style="width:0%"></div></div></div><div class="progress-pct" id="admin-pct">0%</div></div>
+    <div id="admin-list"></div>
+    <button class="reset-btn" onclick="resetPage('admin')">Zurücksetzen</button>
+  </div>
 
-  <!-- GARDEN -->
   <div id="page-garden" class="page">
-    <div class="progress-wrap">
-      <div class="progress-info">
-        <div class="progress-label" id="garden-label">wird geladen...</div>
-        <div class="progress-bar"><div class="progress-fill" id="garden-bar" style="width:0%"></div></div>
-      </div>
-      <div class="progress-pct" id="garden-pct">0%</div>
-    </div>
+    <div class="progress-wrap"><div class="progress-info"><div class="progress-label" id="garden-label">…</div><div class="progress-bar"><div class="progress-fill" id="garden-bar" style="width:0%"></div></div></div><div class="progress-pct" id="garden-pct">0%</div></div>
     <div class="garden-grid" id="garden-grid"></div>
     <div class="garden-legend">
       <span class="gl"><span class="gldot" style="background:var(--green)"></span>Fertig geputzt</span>
       <span class="gl"><span class="gldot" style="background:var(--amber)"></span>Gemäht</span>
       <span class="gl"><span class="gldot" style="background:var(--border)"></span>Noch offen</span>
     </div>
-    <div class="garden-note">
-      <strong>Abschnitt 15 (Erdhaufen):</strong> Mit Bruder, Hund innen lassen, mittags 11–15 Uhr, von außen nach innen arbeiten.<br><br>
-      <strong>Tipp:</strong> Auf ein Kästchen klicken um den Status zu ändern: offen → gemäht → fertig.
-    </div>
+    <div class="garden-note"><strong>Abschnitt 15 (Erdhaufen):</strong> Mit Bruder, Hund innen lassen, mittags 11–15 Uhr, von außen nach innen arbeiten.<br><br><strong>Tipp:</strong> Kästchen anklicken um Status zu ändern: offen → gemäht → fertig.</div>
   </div>
 
-  <!-- ADMIN -->
-  <div id="page-admin" class="page">
-    <div class="progress-wrap">
-      <div class="progress-info">
-        <div class="progress-label" id="admin-label">wird geladen...</div>
-        <div class="progress-bar"><div class="progress-fill" id="admin-bar" style="width:0%"></div></div>
-      </div>
-      <div class="progress-pct" id="admin-pct">0%</div>
-    </div>
-    <div id="admin-list"></div>
-    <button class="reset-btn" onclick="resetPage('admin')">Zurücksetzen</button>
-  </div>
-
-  <!-- WEEKLY -->
   <div id="page-weekly" class="page">
     <div class="section-label">📅 Wöchentliche Ankerpunkte</div>
     <table class="week-table">
@@ -232,93 +192,92 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
     </ul>
   </div>
 
-  <div class="footer">Alles wird lokal in deinem Browser gespeichert</div>
+  <div class="footer">Alles wird lokal in deinem Browser gespeichert · Doppelklick zum Bearbeiten · Ziehen zum Verschieben</div>
 </div>
 
 <script>
-// ── Date ──────────────────────────────────────────────
-const today = new Date();
-const DAYS = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
-const MONTHS = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-document.getElementById('today-date').textContent =
-  `${DAYS[today.getDay()]}, ${today.getDate()}. ${MONTHS[today.getMonth()]} ${today.getFullYear()}`;
+// ── Date ─────────────────────────────────────────────
+const DAYS=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+const MONTHS=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const now=new Date();
+document.getElementById('today-date').textContent=`${DAYS[now.getDay()]}, ${now.getDate()}. ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
 
-// ── Default task data ─────────────────────────────────
-const DEFAULTS = {
-  wfh: [
-    { section: '🌅 Morgen', text: 'Ohrentropfen — vor dem Handy', badge: 'b-health', badgeText: '💊 Gesundheit' },
-    { section: '🌅 Morgen', text: 'Vitamine — vor dem Handy', badge: 'b-health', badgeText: '💊 Gesundheit' },
-    { section: '🌅 Morgen', text: 'Morgenspaziergang — angezogen, kein Schlafanzug', badge: 'b-dog', badgeText: '🐶 Hund', sub: '1 Trainingsmoment: Trick oder Menschenmenge üben' },
-    { section: '🌅 Morgen', text: 'Hund bürsten — vor dem Schuhe ausziehen', badge: 'b-dog', badgeText: '🐶 Hund' },
-    { section: '🌅 Morgen', text: 'Bett machen — sofort nach dem Reinkommen', sub: '90 Sekunden. Verhindert Rückfall ins Bett.' },
-    { section: '🌅 Morgen', text: 'Frühstück + Kaffee — Pflicht' },
-    { section: '💻 Arbeit', text: 'Laptop NUR am Schreibtisch — nie im Bett', badge: 'b-work', badgeText: '💻 Arbeit' },
-    { section: '💻 Arbeit', text: 'Arbeitsblock 09:00 – 12:30' },
-    { section: '🍜 Mittagspause', text: 'Alarm "girl get up" — 12:30' },
-    { section: '🍜 Mittagspause', text: 'Italienisch 15 min — während des Essens', badge: 'b-ital', badgeText: '🇮🇹 Italiano', sub: 'Podcast / Duolingo / YouTube — kein Extra-Aufwand' },
-    { section: '🍜 Mittagspause', text: 'Arbeitsblock 13:00 – 17:00' },
-    { section: '🌆 Abend', text: 'Abendspaziergang 17:00 — 40–60 min + Training', badge: 'b-dog', badgeText: '🐶 Hund' },
-    { section: '🌆 Abend', text: 'Fitness — 30 min' },
-    { section: '🌆 Abend', text: 'Eine Haushalts-Kleinaufgabe', sub: 'Wäschekorb in den TV-Raum tragen zählt auch.' },
-    { section: '🌙 Nacht', text: 'Ohrentropfen', badge: 'b-health', badgeText: '💊 Gesundheit' },
-    { section: '🌙 Nacht', text: 'Gesichtsroutine' },
+// ── Badge config ──────────────────────────────────────
+const BADGES=[
+  {key:'b-health',label:'💊 Gesundheit'},
+  {key:'b-dog',label:'🐶 Hund'},
+  {key:'b-work',label:'💻 Arbeit'},
+  {key:'b-ital',label:'🇮🇹 Italiano'},
+];
+
+// ── Default tasks ─────────────────────────────────────
+const DEFAULTS={
+  wfh:[
+    {section:'🌅 Morgen',text:'Ohrentropfen — vor dem Handy',badge:'b-health',badgeText:'💊 Gesundheit'},
+    {section:'🌅 Morgen',text:'Vitamine — vor dem Handy',badge:'b-health',badgeText:'💊 Gesundheit'},
+    {section:'🌅 Morgen',text:'Morgenspaziergang — angezogen, kein Schlafanzug',badge:'b-dog',badgeText:'🐶 Hund',sub:'1 Trainingsmoment: Trick oder Menschenmenge üben'},
+    {section:'🌅 Morgen',text:'Hund bürsten — vor dem Schuhe ausziehen',badge:'b-dog',badgeText:'🐶 Hund'},
+    {section:'🌅 Morgen',text:'Bett machen — sofort nach dem Reinkommen',sub:'90 Sekunden. Verhindert Rückfall ins Bett.'},
+    {section:'🌅 Morgen',text:'Frühstück + Kaffee — Pflicht'},
+    {section:'💻 Arbeit',text:'Laptop NUR am Schreibtisch — nie im Bett',badge:'b-work',badgeText:'💻 Arbeit'},
+    {section:'💻 Arbeit',text:'Arbeitsblock 09:00 – 12:30'},
+    {section:'🍜 Mittagspause',text:'Alarm "girl get up" — 12:30'},
+    {section:'🍜 Mittagspause',text:'Italienisch 15 min — während des Essens',badge:'b-ital',badgeText:'🇮🇹 Italiano',sub:'Podcast / Duolingo / YouTube — kein Extra-Aufwand'},
+    {section:'🍜 Mittagspause',text:'Arbeitsblock 13:00 – 17:00'},
+    {section:'🌆 Abend',text:'Abendspaziergang 17:00 — 40–60 min + Training',badge:'b-dog',badgeText:'🐶 Hund'},
+    {section:'🌆 Abend',text:'Fitness — 30 min'},
+    {section:'🌆 Abend',text:'Eine Haushalts-Kleinaufgabe',sub:'Wäschekorb in den TV-Raum tragen zählt auch.'},
+    {section:'🌙 Nacht',text:'Ohrentropfen',badge:'b-health',badgeText:'💊 Gesundheit'},
+    {section:'🌙 Nacht',text:'Gesichtsroutine'},
   ],
-  office: [
-    { section: '🌅 Morgen', text: 'Ohrentropfen — vor dem Handy', badge: 'b-health', badgeText: '💊 Gesundheit' },
-    { section: '🌅 Morgen', text: 'Vitamine — neben den Schlüsseln', badge: 'b-health', badgeText: '💊 Gesundheit' },
-    { section: '🌅 Morgen', text: 'Kurzer Spaziergang + bürsten + 1 Trainingsmoment', badge: 'b-dog', badgeText: '🐶 Hund' },
-    { section: '🌅 Morgen', text: 'Frühstück vor dem Büro' },
-    { section: '🚌 Pendelweg', text: 'Italienisch im Zug/Bus', badge: 'b-ital', badgeText: '🇮🇹 Italiano', sub: 'Podcast oder Lesson — kein Extra-Aufwand' },
-    { section: '🏢 Nach der Arbeit', text: 'Eine Admin-Aufgabe vor dem Entspannen', sub: 'Garantie, Bilderrahmen, Mail — nur eine.' },
-    { section: '🌆 Abend', text: 'Abendspaziergang 21:00 — 40–60 min + Training', badge: 'b-dog', badgeText: '🐶 Hund', sub: 'Abends mehr Menschen = ideal für Menschenmenge-Training' },
-    { section: '🌆 Abend', text: 'Optional: eine Kleinaufgabe' },
-    { section: '🌙 Nacht', text: 'Ohrentropfen', badge: 'b-health', badgeText: '💊 Gesundheit' },
-    { section: '🌙 Nacht', text: 'Gesichtsroutine' },
+  office:[
+    {section:'🌅 Morgen',text:'Ohrentropfen — vor dem Handy',badge:'b-health',badgeText:'💊 Gesundheit'},
+    {section:'🌅 Morgen',text:'Vitamine — neben den Schlüsseln',badge:'b-health',badgeText:'💊 Gesundheit'},
+    {section:'🌅 Morgen',text:'Kurzer Spaziergang + bürsten + 1 Trainingsmoment',badge:'b-dog',badgeText:'🐶 Hund'},
+    {section:'🌅 Morgen',text:'Frühstück vor dem Büro'},
+    {section:'🚌 Pendelweg',text:'Italienisch im Zug/Bus',badge:'b-ital',badgeText:'🇮🇹 Italiano',sub:'Podcast oder Lesson — kein Extra-Aufwand'},
+    {section:'🏢 Nach der Arbeit',text:'Eine Admin-Aufgabe vor dem Entspannen',sub:'Garantie, Bilderrahmen, Mail — nur eine.'},
+    {section:'🌆 Abend',text:'Abendspaziergang 21:00 — 40–60 min + Training',badge:'b-dog',badgeText:'🐶 Hund',sub:'Abends mehr Menschen = ideal für Menschenmenge-Training'},
+    {section:'🌆 Abend',text:'Optional: eine Kleinaufgabe'},
+    {section:'🌙 Nacht',text:'Ohrentropfen',badge:'b-health',badgeText:'💊 Gesundheit'},
+    {section:'🌙 Nacht',text:'Gesichtsroutine'},
   ],
-  weekend: [
-    { section: '🌅 Morgen (flexibel)', text: 'Ohrentropfen — vor dem Handy', badge: 'b-health', badgeText: '💊 Gesundheit' },
-    { section: '🌅 Morgen (flexibel)', text: 'Vitamine', badge: 'b-health', badgeText: '💊 Gesundheit' },
-    { section: '🌅 Morgen (flexibel)', text: 'Frühstück' },
-    { section: '🌅 Morgen (flexibel)', text: 'Langer Spaziergang + Trainingsfokus', badge: 'b-dog', badgeText: '🐶 Hund', sub: 'Guter Tag für neuen Trick oder Menschenmenge-Session' },
-    { section: '🌅 Morgen (flexibel)', text: 'Hund bürsten', badge: 'b-dog', badgeText: '🐶 Hund' },
-    { section: '🌻 Nachmittag', text: 'Garten — 1 Abschnitt, 30–45 min', sub: 'Nur bei gutem Wetter. Nur ein Abschnitt.' },
-    { section: '🌻 Nachmittag', text: 'Optional: Haushalt / Wäsche / Fensterrahmen' },
-    { section: '🌙 Abend', text: 'Italienisch — auch 10 min zählen', badge: 'b-ital', badgeText: '🇮🇹 Italiano' },
-    { section: '🌙 Abend', text: 'Ohrentropfen + Gesichtsroutine', badge: 'b-health', badgeText: '💊 Gesundheit' },
+  weekend:[
+    {section:'🌅 Morgen (flexibel)',text:'Ohrentropfen — vor dem Handy',badge:'b-health',badgeText:'💊 Gesundheit'},
+    {section:'🌅 Morgen (flexibel)',text:'Vitamine',badge:'b-health',badgeText:'💊 Gesundheit'},
+    {section:'🌅 Morgen (flexibel)',text:'Frühstück'},
+    {section:'🌅 Morgen (flexibel)',text:'Langer Spaziergang + Trainingsfokus',badge:'b-dog',badgeText:'🐶 Hund',sub:'Guter Tag für neuen Trick oder Menschenmenge-Session'},
+    {section:'🌅 Morgen (flexibel)',text:'Hund bürsten',badge:'b-dog',badgeText:'🐶 Hund'},
+    {section:'🌻 Nachmittag',text:'Garten — 1 Abschnitt, 30–45 min',sub:'Nur bei gutem Wetter. Nur ein Abschnitt.'},
+    {section:'🌻 Nachmittag',text:'Optional: Haushalt / Wäsche / Fensterrahmen'},
+    {section:'🌙 Abend',text:'Italienisch — auch 10 min zählen',badge:'b-ital',badgeText:'🇮🇹 Italiano'},
+    {section:'🌙 Abend',text:'Ohrentropfen + Gesichtsroutine',badge:'b-health',badgeText:'💊 Gesundheit'},
   ],
-  admin: [
-    { section: '📋 Offene Aufgaben', text: 'Oral-B Garantie — service.oralb.com', sub: 'Seriennummer von der Unterseite + Kaufbeleg. Kein Keller nötig.' },
-    { section: '📋 Offene Aufgaben', text: 'Bilderrahmen ausmessen (Flur)', sub: 'Maßband, 3 Minuten, in Handy-Notizen schreiben.' },
-    { section: '📋 Offene Aufgaben', text: 'Bilder drucken (A4 Drucker)', sub: 'Dateien vorbereiten — Qualität egal für jetzt, einfach drucken.' },
-    { section: '📋 Offene Aufgaben', text: 'Bilder im Flur tauschen', sub: 'Leiter holen, alle Rahmen in einer Session — nicht einzeln.' },
-    { section: '📋 Offene Aufgaben', text: 'Standardbild im Wohnzimmer tauschen' },
-    { section: '📋 Offene Aufgaben', text: 'Mängelanzeige Ratten an Verpächter', sub: 'Grünflächenamt / Liegenschaftsamt — schriftlich.' },
-    { section: '📋 Offene Aufgaben', text: 'Social Media Plan importieren + in Tagesplan einbauen' },
+  admin:[
+    {section:'📋 Offene Aufgaben',text:'Oral-B Garantie — service.oralb.com',sub:'Seriennummer von der Unterseite + Kaufbeleg. Kein Keller nötig.'},
+    {section:'📋 Offene Aufgaben',text:'Bilderrahmen ausmessen (Flur)',sub:'Maßband, 3 Minuten, in Handy-Notizen schreiben.'},
+    {section:'📋 Offene Aufgaben',text:'Bilder drucken (A4 Drucker)',sub:'Dateien vorbereiten — Qualität egal für jetzt.'},
+    {section:'📋 Offene Aufgaben',text:'Bilder im Flur tauschen',sub:'Leiter holen, alle Rahmen in einer Session — nicht einzeln.'},
+    {section:'📋 Offene Aufgaben',text:'Standardbild im Wohnzimmer tauschen'},
+    {section:'📋 Offene Aufgaben',text:'Mängelanzeige Ratten an Verpächter',sub:'Grünflächenamt / Liegenschaftsamt — schriftlich.'},
+    {section:'📋 Offene Aufgaben',text:'Social Media Plan importieren + in Tagesplan einbauen'},
   ],
 };
 
 // ── State ─────────────────────────────────────────────
-function loadState() {
-  try { const s = localStorage.getItem('tagesplan_v2'); return s ? JSON.parse(s) : {}; }
-  catch(e) { return {}; }
-}
-function saveState() {
-  try { localStorage.setItem('tagesplan_v2', JSON.stringify(appState)); } catch(e) {}
-}
+function loadState(){try{const s=localStorage.getItem('tagesplan_v3');return s?JSON.parse(s):{}}catch(e){return{}}}
+function saveState(){try{localStorage.setItem('tagesplan_v3',JSON.stringify(appState))}catch(e){}}
 
-let appState = loadState();
+let appState=loadState();
 
-// initialise task lists from defaults if not yet saved
-['wfh','office','weekend','admin'].forEach(page => {
-  if (!appState[page]) {
-    appState[page] = { tasks: DEFAULTS[page].map((t,i) => ({ id: 'def_'+i, ...t, done: false })) };
-  } else if (!appState[page].tasks) {
-    appState[page].tasks = DEFAULTS[page].map((t,i) => ({ id: 'def_'+i, ...t, done: false }));
+['wfh','office','weekend','admin'].forEach(p=>{
+  if(!appState[p]||!appState[p].tasks){
+    appState[p]={tasks:DEFAULTS[p].map((t,i)=>({id:'def_'+p+'_'+i,...t,done:false}))};
   }
 });
 
-if (!appState.garden) {
-  appState.garden = [
+if(!appState.garden){
+  appState.garden=[
     {id:'g1',label:'A1',state:'done'},{id:'g2',label:'A2',state:'done'},
     {id:'g3',label:'A3',state:'done'},{id:'g4',label:'A4',state:'done'},
     {id:'g5',label:'A5',state:'done'},{id:'g6',label:'A6',state:'mowed'},
@@ -330,145 +289,298 @@ if (!appState.garden) {
   ];
 }
 
-// ── Render task list ──────────────────────────────────
-const CHECK_SVG = `<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+// ── Helpers ───────────────────────────────────────────
+const CHECK=`<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function uid(){return 'u_'+Date.now()+'_'+Math.random().toString(36).slice(2)}
+function cssid(s){return s.replace(/[^a-z0-9]/gi,'_')}
 
-function renderPage(page) {
-  const container = document.getElementById(page+'-list');
-  const tasks = appState[page].tasks;
-
-  // group by section
-  const sections = [];
-  const sectionMap = {};
-  tasks.forEach(t => {
-    if (!sectionMap[t.section]) { sectionMap[t.section] = []; sections.push(t.section); }
-    sectionMap[t.section].push(t);
+function badgePickerHtml(selectedKey){
+  let h=`<div class="badge-picker">`;
+  h+=`<button type="button" class="badge-pick-btn${!selectedKey?' selected-none':''}" data-badge="" data-badge-text="">— kein</button>`;
+  BADGES.forEach(b=>{
+    const sel=selectedKey===b.key?' selected-'+b.key.replace('b-',''):'';
+    h+=`<button type="button" class="badge-pick-btn${sel}" data-badge="${b.key}" data-badge-text="${b.label}">${b.label}</button>`;
   });
+  h+=`</div>`;
+  return h;
+}
 
-  let html = '';
-  sections.forEach(sec => {
-    html += `<div class="section-label">${sec}</div>`;
-    sectionMap[sec].forEach(task => {
-      const badgeHtml = task.badge ? `<span class="badge ${task.badge}">${task.badgeText}</span>` : '';
-      const subHtml = task.sub ? `<div class="isub">${task.sub}</div>` : '';
-      html += `
-        <div class="item${task.done?' done':''}" data-id="${task.id}" data-page="${page}">
-          <div class="cb" onclick="toggleTask('${page}','${task.id}')">${CHECK_SVG}</div>
-          <div class="itext" onclick="toggleTask('${page}','${task.id}')" style="flex:1">${badgeHtml}${escHtml(task.text)}${subHtml}</div>
-          <button class="del-btn" onclick="deleteTask('${page}','${task.id}')" title="Löschen">✕</button>
-        </div>`;
+// ── Drag state ────────────────────────────────────────
+let dragPage=null,dragId=null,dragOverId=null;
+
+// ── Render ────────────────────────────────────────────
+function renderPage(page){
+  const container=document.getElementById(page+'-list');
+  const tasks=appState[page].tasks;
+
+  // group sections preserving order
+  const sections=[],seen={};
+  tasks.forEach(t=>{if(!seen[t.section]){seen[t.section]=true;sections.push(t.section)}});
+
+  let html='';
+  sections.forEach(sec=>{
+    html+=`<div class="section-label">${esc(sec)}</div>`;
+    tasks.filter(t=>t.section===sec).forEach(task=>{
+      const badgeHtml=task.badge?`<span class="badge ${task.badge}">${esc(task.badgeText)}</span>`:'';
+      const subHtml=task.sub?`<div class="isub">${esc(task.sub)}</div>`:'';
+      html+=`
+      <div class="item${task.done?' done':''}" data-id="${task.id}" data-page="${page}"
+           draggable="true"
+           ondragstart="onDragStart(event,'${page}','${task.id}')"
+           ondragover="onDragOver(event,'${page}','${task.id}')"
+           ondragleave="onDragLeave(event)"
+           ondrop="onDrop(event,'${page}','${task.id}')">
+        <div class="drag-handle" title="Verschieben">⠿</div>
+        <div class="cb" onclick="toggleTask('${page}','${task.id}')">${CHECK}</div>
+        <div class="item-body">
+          <div class="itext" ondblclick="startEdit('${page}','${task.id}')">${badgeHtml}${esc(task.text)}</div>
+          ${subHtml}
+          <div class="edit-hint">Doppelklick zum Bearbeiten</div>
+          <div class="edit-form" id="edit-${task.id}">
+            <input class="edit-input" id="editinput-${task.id}" value="${esc(task.text)}"
+              onkeydown="editKey(event,'${page}','${task.id}')">
+            ${badgePickerHtml(task.badge)}
+            <div class="edit-actions">
+              <button class="edit-save" onclick="saveEdit('${page}','${task.id}')">Speichern</button>
+              <button class="edit-cancel" onclick="cancelEdit('${task.id}')">Abbrechen</button>
+            </div>
+          </div>
+        </div>
+        <button class="del-btn" onclick="deleteTask('${page}','${task.id}')" title="Löschen">✕</button>
+      </div>`;
     });
+
     // add-task row per section
-    html += `
-      <div class="add-input-row" id="addinput-${page}-${cssId(sec)}">
-        <div class="add-cb-placeholder"></div>
+    const sid=cssid(sec);
+    html+=`
+    <div class="add-input-row" id="addinput-${page}-${sid}">
+      <div class="add-cb-placeholder"></div>
+      <div class="add-body">
         <input class="add-input" placeholder="Aufgabe eingeben und Enter drücken…"
           onkeydown="handleAddKey(event,'${page}','${sec}')"
-          onblur="hideAddInput('${page}','${sec}')">
+          onblur="scheduleHide('${page}','${sec}')">
+        ${badgePickerHtml(null)}
       </div>
-      <div class="add-row" id="addrow-${page}-${cssId(sec)}" onclick="showAddInput('${page}','${sec}')">
-        <span class="plus">+</span> Aufgabe hinzufügen
-      </div>`;
+    </div>
+    <div class="add-row" id="addrow-${page}-${sid}" onclick="showAddInput('${page}','${sec}')">
+      <span class="plus">+</span> Aufgabe hinzufügen
+    </div>`;
   });
 
-  container.innerHTML = html;
+  container.innerHTML=html;
+
+  // wire badge pickers in edit forms
+  container.querySelectorAll('.edit-form .badge-pick-btn').forEach(btn=>{
+    btn.addEventListener('mousedown',e=>{
+      e.preventDefault();
+      const form=btn.closest('.edit-form');
+      form.querySelectorAll('.badge-pick-btn').forEach(b=>b.className='badge-pick-btn');
+      const bkey=btn.dataset.badge;
+      if(bkey) btn.className='badge-pick-btn selected-'+bkey.replace('b-','');
+      btn.dataset.selected='1';
+    });
+  });
+
+  // wire badge pickers in add-input rows
+  container.querySelectorAll('.add-input-row .badge-pick-btn').forEach(btn=>{
+    btn.addEventListener('mousedown',e=>{
+      e.preventDefault();
+      const row=btn.closest('.add-input-row');
+      row.querySelectorAll('.badge-pick-btn').forEach(b=>b.className='badge-pick-btn');
+      const bkey=btn.dataset.badge;
+      if(bkey) btn.className='badge-pick-btn selected-'+bkey.replace('b-','');
+    });
+  });
+
   updateProgress(page);
 }
 
-function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function cssId(s) { return s.replace(/[^a-z0-9]/gi,'_'); }
-
-function showAddInput(page, sec) {
-  const row = document.getElementById('addrow-'+page+'-'+cssId(sec));
-  const inp = document.getElementById('addinput-'+page+'-'+cssId(sec));
-  row.style.display = 'none';
-  inp.classList.add('visible');
-  inp.querySelector('input').focus();
+// ── Edit ──────────────────────────────────────────────
+function startEdit(page,id){
+  const form=document.getElementById('edit-'+id);
+  if(!form)return;
+  form.classList.add('visible');
+  const task=appState[page].tasks.find(t=>t.id===id);
+  // pre-select badge
+  form.querySelectorAll('.badge-pick-btn').forEach(b=>{
+    b.className='badge-pick-btn';
+    if(task.badge&&b.dataset.badge===task.badge)
+      b.className='badge-pick-btn selected-'+task.badge.replace('b-','');
+    if(!task.badge&&b.dataset.badge==='')
+      b.className='badge-pick-btn';
+  });
+  document.getElementById('editinput-'+id).focus();
 }
 
-function hideAddInput(page, sec) {
-  const row = document.getElementById('addrow-'+page+'-'+cssId(sec));
-  const inp = document.getElementById('addinput-'+page+'-'+cssId(sec));
-  inp.querySelector('input').value = '';
-  inp.classList.remove('visible');
-  row.style.display = '';
+function cancelEdit(id){
+  const form=document.getElementById('edit-'+id);
+  if(form)form.classList.remove('visible');
 }
 
-function handleAddKey(e, page, sec) {
-  if (e.key === 'Enter') {
-    const val = e.target.value.trim();
-    if (val) {
-      addTask(page, sec, val);
+function editKey(e,page,id){
+  if(e.key==='Enter'){e.preventDefault();saveEdit(page,id)}
+  if(e.key==='Escape')cancelEdit(id);
+}
+
+function saveEdit(page,id){
+  const form=document.getElementById('edit-'+id);
+  const input=document.getElementById('editinput-'+id);
+  const val=input.value.trim();
+  if(!val)return;
+  const task=appState[page].tasks.find(t=>t.id===id);
+  task.text=val;
+  // get selected badge from picker
+  const selected=form.querySelector('.badge-pick-btn[class*="selected-"]');
+  if(selected){
+    task.badge=selected.dataset.badge||null;
+    task.badgeText=selected.dataset.badgeText||null;
+  } else {
+    task.badge=null;task.badgeText=null;
+  }
+  saveState();
+  renderPage(page);
+}
+
+// ── Add ───────────────────────────────────────────────
+let hideTimer=null;
+
+function showAddInput(page,sec){
+  const sid=cssid(sec);
+  document.getElementById('addrow-'+page+'-'+sid).style.display='none';
+  document.getElementById('addinput-'+page+'-'+sid).classList.add('visible');
+  document.getElementById('addinput-'+page+'-'+sid).querySelector('input').focus();
+}
+
+function scheduleHide(page,sec){
+  hideTimer=setTimeout(()=>hideAddInput(page,sec),200);
+}
+
+function hideAddInput(page,sec){
+  const sid=cssid(sec);
+  const row=document.getElementById('addinput-'+page+'-'+sid);
+  if(!row)return;
+  row.querySelector('input').value='';
+  row.querySelectorAll('.badge-pick-btn').forEach(b=>b.className='badge-pick-btn');
+  row.classList.remove('visible');
+  document.getElementById('addrow-'+page+'-'+sid).style.display='';
+}
+
+function handleAddKey(e,page,sec){
+  if(hideTimer){clearTimeout(hideTimer);hideTimer=null;}
+  if(e.key==='Enter'){
+    const val=e.target.value.trim();
+    if(val){
+      const sid=cssid(sec);
+      const row=document.getElementById('addinput-'+page+'-'+sid);
+      const selected=row.querySelector('.badge-pick-btn[class*="selected-"]');
+      let badge=null,badgeText=null;
+      if(selected){badge=selected.dataset.badge||null;badgeText=selected.dataset.badgeText||null;}
+      appState[page].tasks.push({id:uid(),section:sec,text:val,done:false,badge,badgeText});
+      saveState();
+      renderPage(page);
+      showAddInput(page,sec);
     } else {
-      hideAddInput(page, sec);
+      hideAddInput(page,sec);
     }
   }
-  if (e.key === 'Escape') hideAddInput(page, sec);
+  if(e.key==='Escape')hideAddInput(page,sec);
 }
 
-function addTask(page, sec, text) {
-  const id = 'usr_' + Date.now();
-  appState[page].tasks.push({ id, section: sec, text, done: false });
-  saveState();
-  renderPage(page);
-  // re-show add input for that section so user can keep adding
-  showAddInput(page, sec);
+// ── Toggle / Delete ───────────────────────────────────
+function toggleTask(page,id){
+  const t=appState[page].tasks.find(t=>t.id===id);
+  if(t){t.done=!t.done;saveState();renderPage(page);}
 }
 
-function deleteTask(page, id) {
-  appState[page].tasks = appState[page].tasks.filter(t => t.id !== id);
-  saveState();
-  renderPage(page);
+function deleteTask(page,id){
+  appState[page].tasks=appState[page].tasks.filter(t=>t.id!==id);
+  saveState();renderPage(page);
 }
 
-function toggleTask(page, id) {
-  const task = appState[page].tasks.find(t => t.id === id);
-  if (task) { task.done = !task.done; saveState(); renderPage(page); }
+// ── Progress ──────────────────────────────────────────
+function updateProgress(page){
+  const tasks=appState[page].tasks;
+  const done=tasks.filter(t=>t.done).length;
+  const total=tasks.length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById(page+'-label').textContent=`${done} von ${total} erledigt`;
+  document.getElementById(page+'-bar').style.width=pct+'%';
+  document.getElementById(page+'-pct').textContent=pct+'%';
 }
 
-function updateProgress(page) {
-  const tasks = appState[page].tasks;
-  const done = tasks.filter(t => t.done).length;
-  const total = tasks.length;
-  const pct = total ? Math.round(done/total*100) : 0;
-  document.getElementById(page+'-label').textContent = `${done} von ${total} erledigt`;
-  document.getElementById(page+'-bar').style.width = pct+'%';
-  document.getElementById(page+'-pct').textContent = pct+'%';
+function resetPage(page){
+  appState[page].tasks.forEach(t=>t.done=false);
+  saveState();renderPage(page);
 }
 
-function resetPage(page) {
-  appState[page].tasks.forEach(t => t.done = false);
-  saveState();
-  renderPage(page);
+// ── Drag & Drop ───────────────────────────────────────
+function onDragStart(e,page,id){
+  dragPage=page;dragId=id;
+  setTimeout(()=>{
+    const el=document.querySelector(`[data-id="${id}"]`);
+    if(el)el.classList.add('dragging');
+  },0);
+  e.dataTransfer.effectAllowed='move';
 }
+
+function onDragOver(e,page,id){
+  e.preventDefault();
+  e.dataTransfer.dropEffect='move';
+  if(id===dragId)return;
+  dragOverId=id;
+  document.querySelectorAll('.item').forEach(el=>el.classList.remove('drag-over'));
+  const el=document.querySelector(`[data-id="${id}"]`);
+  if(el)el.classList.add('drag-over');
+}
+
+function onDragLeave(e){
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function onDrop(e,page,id){
+  e.preventDefault();
+  if(!dragId||dragId===id||dragPage!==page)return;
+  const tasks=appState[page].tasks;
+  const fromIdx=tasks.findIndex(t=>t.id===dragId);
+  const toIdx=tasks.findIndex(t=>t.id===id);
+  if(fromIdx<0||toIdx<0)return;
+  const [moved]=tasks.splice(fromIdx,1);
+  tasks.splice(toIdx,0,moved);
+  dragId=null;dragOverId=null;dragPage=null;
+  saveState();renderPage(page);
+}
+
+document.addEventListener('dragend',()=>{
+  document.querySelectorAll('.item').forEach(el=>{
+    el.classList.remove('dragging','drag-over');
+  });
+});
 
 // ── Garden ────────────────────────────────────────────
-const GSTATE_ORDER = ['pending','mowed','done'];
-const GSTATE_ICON = { done:'✅', mowed:'〰️', pending:'○' };
+const GORDER=['pending','mowed','done'];
+const GICON={done:'✅',mowed:'〰️',pending:'○'};
 
-function buildGarden() {
-  const grid = document.getElementById('garden-grid');
-  grid.innerHTML = '';
-  appState.garden.forEach(g => {
-    const d = document.createElement('div');
-    d.className = 'gbox ' + g.state;
-    d.innerHTML = `<span class="gbox-icon">${GSTATE_ICON[g.state]}</span><span>${g.label}${g.sub?'<br><span style="font-size:9px">'+g.sub+'</span>':''}</span>`;
-    d.onclick = () => {
-      g.state = GSTATE_ORDER[(GSTATE_ORDER.indexOf(g.state)+1)%3];
-      saveState(); buildGarden();
-    };
+function buildGarden(){
+  const grid=document.getElementById('garden-grid');
+  grid.innerHTML='';
+  appState.garden.forEach(g=>{
+    const d=document.createElement('div');
+    d.className='gbox '+g.state;
+    d.innerHTML=`<span class="gbox-icon">${GICON[g.state]}</span><span>${g.label}${g.sub?'<br><span style="font-size:9px">'+g.sub+'</span>':''}</span>`;
+    d.onclick=()=>{g.state=GORDER[(GORDER.indexOf(g.state)+1)%3];saveState();buildGarden();};
     grid.appendChild(d);
   });
-  const done = appState.garden.filter(g=>g.state==='done').length;
-  const started = appState.garden.filter(g=>g.state!=='pending').length;
-  const pct = Math.round(started/15*100);
-  document.getElementById('garden-label').textContent = `${done} fertig geputzt · ${started} von 15 begonnen`;
-  document.getElementById('garden-bar').style.width = pct+'%';
-  document.getElementById('garden-pct').textContent = pct+'%';
+  const done=appState.garden.filter(g=>g.state==='done').length;
+  const started=appState.garden.filter(g=>g.state!=='pending').length;
+  const pct=Math.round(started/15*100);
+  document.getElementById('garden-label').textContent=`${done} fertig geputzt · ${started} von 15 begonnen`;
+  document.getElementById('garden-bar').style.width=pct+'%';
+  document.getElementById('garden-pct').textContent=pct+'%';
 }
 
 // ── Nav ───────────────────────────────────────────────
-function showPage(id, el) {
+function showPage(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
@@ -476,7 +588,7 @@ function showPage(id, el) {
 }
 
 // ── Init ──────────────────────────────────────────────
-['wfh','office','weekend','admin'].forEach(p => renderPage(p));
+['wfh','office','weekend','admin'].forEach(p=>renderPage(p));
 buildGarden();
 saveState();
 </script>
