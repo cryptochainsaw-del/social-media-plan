@@ -1,221 +1,484 @@
-
-<h2 class="sr-only">Personalized daily schedule for WFH days, office days, and weekends — copy into Notion</h2>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mein Tagesplan</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-.root{padding:1rem 0;font-family:var(--font-sans)}
-.tabs{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap}
-.tab{padding:5px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:transparent;font-size:13px;cursor:pointer;color:var(--color-text-secondary)}
-.tab.on{background:var(--color-background-secondary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-primary)}
-.view{display:none}.view.on{display:block}
-.row{display:grid;grid-template-columns:72px 1fr;gap:10px;margin-bottom:6px;align-items:start}
-.t{font-size:11px;color:var(--color-text-tertiary);padding-top:9px;text-align:right;letter-spacing:.3px}
-.card{border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);padding:8px 12px}
-.card.morning{background:var(--color-background-secondary)}
-.card.work{border-color:var(--color-border-info);background:var(--color-background-info)}
-.card.walk{border-color:var(--color-border-success);background:var(--color-background-success)}
-.card.eve{background:var(--color-background-secondary)}
-.card.night{background:var(--color-background-secondary)}
-.ctitle{font-size:13px;font-weight:500;color:var(--color-text-primary);display:flex;align-items:center;gap:6px}
-.csub{font-size:12px;color:var(--color-text-secondary);margin-top:3px;line-height:1.4}
-.badge{font-size:11px;padding:2px 7px;border-radius:99px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
-.badge.dog{background:var(--color-background-success);color:var(--color-text-success);border-color:transparent}
-.badge.ital{background:#EEEDFE;color:#3C3489;border-color:transparent}
-.badge.health{background:var(--color-background-warning);color:var(--color-text-warning);border-color:transparent}
-.divider{height:0.5px;background:var(--color-border-tertiary);margin:1rem 0}
-.note{font-size:12px;color:var(--color-text-secondary);line-height:1.5;padding:8px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);margin-top:12px}
-.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
-.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
-.dot{width:8px;height:8px;border-radius:50%}
+:root {
+  --bg: #F5F0E8;
+  --surface: #FDFAF4;
+  --border: #DDD5C4;
+  --border-light: #EAE4D8;
+  --text: #2A2318;
+  --text-muted: #8A7E6E;
+  --text-faint: #B5AA99;
+  --green: #3D6B4F;
+  --green-bg: #EAF2ED;
+  --green-light: #C5DDD0;
+  --amber: #9C6A1A;
+  --amber-bg: #FDF3E0;
+  --blue: #1E4D7B;
+  --blue-bg: #E8F0F9;
+  --purple: #5B3F8C;
+  --purple-bg: #F0EAFA;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; }
+.app { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+
+.header { margin-bottom: 2rem; }
+.header h1 { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; letter-spacing: -.5px; margin-bottom: 2px; }
+.header .date { font-size: 13px; color: var(--text-muted); font-weight: 300; }
+
+.nav { display: flex; gap: 4px; background: var(--surface); border: .5px solid var(--border); border-radius: var(--radius); padding: 4px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.nav-btn { flex: 1; min-width: 80px; padding: 7px 8px; border: none; border-radius: var(--radius-sm); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text-muted); cursor: pointer; transition: all .15s; text-align: center; white-space: nowrap; }
+.nav-btn.active { background: var(--bg); color: var(--text); font-weight: 500; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+.page { display: none; }
+.page.active { display: block; }
+
+.progress-wrap { background: var(--surface); border: .5px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 14px; }
+.progress-info { flex: 1; }
+.progress-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 300; }
+.progress-bar { height: 5px; background: var(--border-light); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--green); border-radius: 99px; transition: width .4s cubic-bezier(.4,0,.2,1); }
+.progress-pct { font-family: 'Fraunces', serif; font-size: 22px; color: var(--green); min-width: 40px; text-align: right; }
+
+.section-label { font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--text-faint); margin: 1.25rem 0 4px; }
+.section-label:first-of-type { margin-top: 0; }
+
+.item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm); border: .5px solid transparent; margin-bottom: 2px; position: relative; }
+.item:hover { background: var(--surface); border-color: var(--border-light); }
+.item:hover .del-btn { opacity: 1; }
+
+.cb { width: 17px; height: 17px; min-width: 17px; border-radius: 4px; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: all .15s; cursor: pointer; flex-shrink: 0; }
+.item.done .cb { background: var(--green); border-color: var(--green); }
+.cb svg { display: none; }
+.item.done .cb svg { display: block; }
+
+.itext { font-size: 13.5px; color: var(--text); line-height: 1.4; flex: 1; cursor: pointer; transition: color .15s; }
+.item.done .itext { text-decoration: line-through; color: var(--text-faint); }
+.isub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; font-weight: 300; line-height: 1.4; transition: color .15s; }
+.item.done .isub { color: var(--text-faint); text-decoration: line-through; }
+
+.del-btn { opacity: 0; background: none; border: none; cursor: pointer; color: var(--text-faint); font-size: 14px; padding: 2px 4px; border-radius: 4px; transition: all .15s; margin-top: 1px; flex-shrink: 0; line-height: 1; }
+.del-btn:hover { color: #8B2E2E; background: #FAEAEA; }
+
+.badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 1px 7px; border-radius: 99px; margin-right: 5px; letter-spacing: .2px; }
+.b-health { background: var(--amber-bg); color: var(--amber); }
+.b-dog { background: var(--green-bg); color: var(--green); }
+.b-ital { background: var(--purple-bg); color: var(--purple); }
+.b-work { background: var(--blue-bg); color: var(--blue); }
+
+/* Add task row */
+.add-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: var(--radius-sm); margin-top: 4px; cursor: pointer; color: var(--text-faint); font-size: 13px; font-weight: 300; transition: all .15s; border: .5px dashed transparent; }
+.add-row:hover { color: var(--text-muted); border-color: var(--border); background: var(--surface); }
+.add-row .plus { font-size: 16px; line-height: 1; color: var(--text-faint); }
+
+.add-input-row { display: none; align-items: flex-start; gap: 10px; padding: 6px 10px; margin-bottom: 2px; }
+.add-input-row.visible { display: flex; }
+.add-cb-placeholder { width: 17px; height: 17px; min-width: 17px; border-radius: 4px; border: 1.5px solid var(--border-light); margin-top: 2px; flex-shrink: 0; }
+.add-input { flex: 1; border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text); outline: none; padding: 0; }
+.add-input::placeholder { color: var(--text-faint); font-weight: 300; }
+
+.divider { height: .5px; background: var(--border-light); margin: 1.25rem 0; }
+
+.reset-btn { font-size: 11.5px; color: var(--text-faint); background: transparent; border: none; cursor: pointer; padding: 6px 0; margin-top: 6px; font-family: 'DM Sans', sans-serif; font-weight: 300; text-decoration: underline; transition: color .15s; }
+.reset-btn:hover { color: var(--text-muted); }
+
+/* Garden */
+.garden-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 7px; margin-top: 8px; }
+.gbox { border-radius: var(--radius-sm); border: .5px solid var(--border); padding: 9px 6px 7px; text-align: center; font-size: 11px; color: var(--text-muted); cursor: pointer; transition: all .15s; background: var(--surface); }
+.gbox:hover { border-color: var(--text-faint); }
+.gbox.done { background: var(--green-bg); border-color: var(--green-light); color: var(--green); }
+.gbox.mowed { background: var(--amber-bg); border-color: #E8C987; color: var(--amber); }
+.gbox-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.garden-legend { display: flex; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
+.gl { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); font-weight: 300; }
+.gldot { width: 8px; height: 8px; border-radius: 2px; }
+.garden-note { margin-top: 14px; padding: 12px 14px; background: var(--surface); border: .5px solid var(--border); border-radius: var(--radius); font-size: 12px; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+.garden-note strong { font-weight: 500; color: var(--text); }
+
+/* Weekly */
+.week-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 6px; }
+.week-table th { text-align: left; font-size: 10px; font-weight: 500; letter-spacing: .8px; text-transform: uppercase; color: var(--text-faint); padding: 0 10px 8px; border-bottom: .5px solid var(--border); }
+.week-table td { padding: 9px 10px; border-bottom: .5px solid var(--border-light); vertical-align: top; font-weight: 300; color: var(--text-muted); }
+.week-table td:first-child { font-weight: 500; color: var(--text); white-space: nowrap; width: 90px; }
+.week-table tr:last-child td { border-bottom: none; }
+
+.rules-list { list-style: none; margin-top: 6px; }
+.rules-list li { padding: 8px 12px; border-left: 2px solid var(--green-light); margin-bottom: 6px; font-size: 13px; color: var(--text-muted); font-weight: 300; line-height: 1.4; background: var(--surface); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+
+.footer { margin-top: 2rem; font-size: 11px; color: var(--text-faint); font-weight: 300; text-align: center; }
 </style>
+</head>
+<body>
+<div class="app">
 
-<div class="root">
-<div class="tabs">
-  <button class="tab on" onclick="sw('wfh',this)">WFH — Mon/Thu/Fri</button>
-  <button class="tab" onclick="sw('office',this)">Office — Tue/Wed</button>
-  <button class="tab" onclick="sw('weekend',this)">Weekend</button>
-</div>
+  <div class="header">
+    <h1>Mein Tagesplan</h1>
+    <div class="date" id="today-date"></div>
+  </div>
 
-<div class="legend">
-  <span class="leg"><span class="dot" style="background:var(--color-text-info)"></span>Work</span>
-  <span class="leg"><span class="dot" style="background:var(--color-text-success)"></span>Dog</span>
-  <span class="leg"><span class="dot" style="background:#534AB7"></span>Italian</span>
-  <span class="leg"><span class="dot" style="background:var(--color-text-warning)"></span>Health</span>
-</div>
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showPage('wfh',this)">🏠 WFH</button>
+    <button class="nav-btn" onclick="showPage('office',this)">🏢 Büro</button>
+    <button class="nav-btn" onclick="showPage('weekend',this)">🌅 Wochenende</button>
+    <button class="nav-btn" onclick="showPage('garden',this)">🌱 Garten</button>
+    <button class="nav-btn" onclick="showPage('admin',this)">📋 Admin</button>
+    <button class="nav-btn" onclick="showPage('weekly',this)">📅 Woche</button>
+  </nav>
 
-<div id="wfh" class="view on">
-  <div class="row">
-    <span class="t">7:30</span>
-    <div class="card morning">
-      <div class="ctitle"><i class="ti ti-brightness" aria-hidden="true" style="font-size:15px"></i> Wake up <span class="badge health">ear drops</span><span class="badge health">vitamins</span></div>
-      <div class="csub">Both before phone. Drops + vitamins are next to bed/coffee machine.</div>
+  <!-- WFH -->
+  <div id="page-wfh" class="page active">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <div class="progress-label" id="wfh-label">wird geladen...</div>
+        <div class="progress-bar"><div class="progress-fill" id="wfh-bar" style="width:0%"></div></div>
+      </div>
+      <div class="progress-pct" id="wfh-pct">0%</div>
     </div>
+    <div id="wfh-list"></div>
+    <button class="reset-btn" onclick="resetPage('wfh')">Tag zurücksetzen</button>
   </div>
-  <div class="row">
-    <span class="t">7:45</span>
-    <div class="card walk">
-      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Morning dog walk <span class="badge dog">+training</span></div>
-      <div class="csub">Already dressed — not pajamas. 1 trick or 1 crowd exposure moment during the walk. Brush him after you're back (2 min, do it before taking shoes off).</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">8:15</span>
-    <div class="card morning">
-      <div class="ctitle"><i class="ti ti-coffee" aria-hidden="true" style="font-size:15px"></i> Breakfast + coffee — mandatory</div>
-      <div class="csub">You're already in the kitchen from the walk. No back to bed.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">9:00</span>
-    <div class="card work">
-      <div class="ctitle"><i class="ti ti-desk" aria-hidden="true" style="font-size:15px;color:var(--color-text-info)"></i><span style="color:var(--color-text-info)">Work block — desk only, not bed</span></div>
-      <div class="csub" style="color:var(--color-text-info)">Hard rule. Laptop never opens in bed on WFH days.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">12:30</span>
-    <div class="card morning">
-      <div class="ctitle"><i class="ti ti-soup" aria-hidden="true" style="font-size:15px"></i> Lunch <span class="badge ital">Italian 15 min</span></div>
-      <div class="csub">Alarm named "girl get up" at 12:30. Italian podcast/Duolingo while eating — zero extra time cost.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">13:00</span>
-    <div class="card work">
-      <div class="ctitle"><i class="ti ti-desk" aria-hidden="true" style="font-size:15px;color:var(--color-text-info)"></i><span style="color:var(--color-text-info)">Work block continues</span></div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">17:00</span>
-    <div class="card walk">
-      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Evening walk — 40–60 min <span class="badge dog">+training</span></div>
-      <div class="csub">This is your clock-out ritual. Crowd exposure, leash manners, or new trick — pick one focus per walk, not all three.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">18:00</span>
-    <div class="card eve">
-      <div class="ctitle"><i class="ti ti-run" aria-hidden="true" style="font-size:15px"></i> Fitness — 30 min minimum</div>
-      <div class="csub">You're already outside-mode from the walk. Best time to chain it.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">19:00</span>
-    <div class="card eve">
-      <div class="ctitle"><i class="ti ti-home" aria-hidden="true" style="font-size:15px"></i> One micro household task</div>
-      <div class="csub">Laundry basket moved to TV room before you sit down. Or one other small task. Then free evening.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">22:00</span>
-    <div class="card night">
-      <div class="ctitle"><i class="ti ti-moon" aria-hidden="true" style="font-size:15px"></i> Night routine <span class="badge health">ear drops</span><span class="badge health">face</span></div>
-      <div class="csub">Products are on the sink, not in a cupboard. Drops are on your pillow in the morning as reminder.</div>
-    </div>
-  </div>
-</div>
 
-<div id="office" class="view">
-  <div class="row">
-    <span class="t">7:30</span>
-    <div class="card morning">
-      <div class="ctitle"><i class="ti ti-brightness" aria-hidden="true" style="font-size:15px"></i> Wake up <span class="badge health">ear drops</span><span class="badge health">vitamins</span></div>
-      <div class="csub">Commute pressure does the lifting. Vitamins by your keys so you see them on the way out.</div>
+  <!-- OFFICE -->
+  <div id="page-office" class="page">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <div class="progress-label" id="office-label">wird geladen...</div>
+        <div class="progress-bar"><div class="progress-fill" id="office-bar" style="width:0%"></div></div>
+      </div>
+      <div class="progress-pct" id="office-pct">0%</div>
     </div>
+    <div id="office-list"></div>
+    <button class="reset-btn" onclick="resetPage('office')">Tag zurücksetzen</button>
   </div>
-  <div class="row">
-    <span class="t">7:45</span>
-    <div class="card walk">
-      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Quick morning walk + brush</div>
-      <div class="csub">Short walk. Brush him when back. Even 5 min of a training moment counts.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">8:15</span>
-    <div class="card morning">
-      <div class="ctitle"><i class="ti ti-coffee" aria-hidden="true" style="font-size:15px"></i> Breakfast + leave for office</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">commute</span>
-    <div class="card morning">
-      <div class="ctitle"><i class="ti ti-headphones" aria-hidden="true" style="font-size:15px"></i> Italian on the way <span class="badge ital">Italian</span></div>
-      <div class="csub">Podcast, playlist or lesson. Zero extra time.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">office</span>
-    <div class="card work">
-      <div class="ctitle"><i class="ti ti-building" aria-hidden="true" style="font-size:15px;color:var(--color-text-info)"></i><span style="color:var(--color-text-info)">Office day — structure comes for free</span></div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">after work</span>
-    <div class="card eve">
-      <div class="ctitle"><i class="ti ti-checklist" aria-hidden="true" style="font-size:15px"></i> One admin task before relaxing</div>
-      <div class="csub">Toothbrush guarantee, picture frame measuring, open that one tab. Office days have natural energy — use 15 min of it.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">21:00</span>
-    <div class="card walk">
-      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Evening walk — 40–60 min <span class="badge dog">+training</span></div>
-      <div class="csub">Later walk on office days. Crowd training is actually great in the evening — more people around.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">22:30</span>
-    <div class="card night">
-      <div class="ctitle"><i class="ti ti-moon" aria-hidden="true" style="font-size:15px"></i> Night routine <span class="badge health">ear drops</span><span class="badge health">face</span></div>
-    </div>
-  </div>
-</div>
 
-<div id="weekend" class="view">
-  <div class="row">
-    <span class="t">flexible</span>
-    <div class="card morning">
-      <div class="ctitle"><i class="ti ti-brightness" aria-hidden="true" style="font-size:15px"></i> Wake up — no alarm needed <span class="badge health">ear drops</span><span class="badge health">vitamins</span></div>
-      <div class="csub">But still: drops + vitamins before phone. Non-negotiable even on weekends.</div>
+  <!-- WEEKEND -->
+  <div id="page-weekend" class="page">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <div class="progress-label" id="weekend-label">wird geladen...</div>
+        <div class="progress-bar"><div class="progress-fill" id="weekend-bar" style="width:0%"></div></div>
+      </div>
+      <div class="progress-pct" id="weekend-pct">0%</div>
     </div>
+    <div id="weekend-list"></div>
+    <button class="reset-btn" onclick="resetPage('weekend')">Tag zurücksetzen</button>
   </div>
-  <div class="row">
-    <span class="t">morning</span>
-    <div class="card walk">
-      <div class="ctitle"><i class="ti ti-dog" aria-hidden="true" style="font-size:15px"></i> Morning or evening walk — your choice <span class="badge dog">+training</span></div>
-      <div class="csub">Weekend walks can be longer, more relaxed. Good day for a proper crowd exposure session or new trick focus.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">afternoon</span>
-    <div class="card eve">
-      <div class="ctitle"><i class="ti ti-garden-cart" aria-hidden="true" style="font-size:15px"></i> Garden session — 30–45 min (if weather ok)</div>
-      <div class="csub">One section per session. You're at 5 cleared + 5 mowed — 5 more to go. Not all at once.</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">whenever</span>
-    <div class="card eve">
-      <div class="ctitle"><i class="ti ti-run" aria-hidden="true" style="font-size:15px"></i> Fitness + social — rest is valid too</div>
-    </div>
-  </div>
-  <div class="row">
-    <span class="t">evening</span>
-    <div class="card night">
-      <div class="ctitle"><i class="ti ti-moon" aria-hidden="true" style="font-size:15px"></i> Night routine <span class="badge health">ear drops</span><span class="badge health">face</span></div>
-    </div>
-  </div>
-  <div class="note">Weekend is recovery + garden progress. You don't need to do everything — picking 2 intentional things on a weekend and actually doing them beats an ambitious list that gets ignored.</div>
-</div>
 
-<div class="divider"></div>
-<div class="note"><i class="ti ti-clipboard-copy" aria-hidden="true" style="font-size:14px;margin-right:6px;vertical-align:-2px"></i><strong style="font-weight:500">For Notion:</strong> Create a "Daily Template" page with three toggle sections (WFH / Office / Weekend), paste these blocks as a checklist. Pin the page to your sidebar so it's the first thing you see when you open Notion. Each checkbox costs you 1 second — that's the whole barrier.</div>
+  <!-- GARDEN -->
+  <div id="page-garden" class="page">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <div class="progress-label" id="garden-label">wird geladen...</div>
+        <div class="progress-bar"><div class="progress-fill" id="garden-bar" style="width:0%"></div></div>
+      </div>
+      <div class="progress-pct" id="garden-pct">0%</div>
+    </div>
+    <div class="garden-grid" id="garden-grid"></div>
+    <div class="garden-legend">
+      <span class="gl"><span class="gldot" style="background:var(--green)"></span>Fertig geputzt</span>
+      <span class="gl"><span class="gldot" style="background:var(--amber)"></span>Gemäht</span>
+      <span class="gl"><span class="gldot" style="background:var(--border)"></span>Noch offen</span>
+    </div>
+    <div class="garden-note">
+      <strong>Abschnitt 15 (Erdhaufen):</strong> Mit Bruder, Hund innen lassen, mittags 11–15 Uhr, von außen nach innen arbeiten.<br><br>
+      <strong>Tipp:</strong> Auf ein Kästchen klicken um den Status zu ändern: offen → gemäht → fertig.
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="page-admin" class="page">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <div class="progress-label" id="admin-label">wird geladen...</div>
+        <div class="progress-bar"><div class="progress-fill" id="admin-bar" style="width:0%"></div></div>
+      </div>
+      <div class="progress-pct" id="admin-pct">0%</div>
+    </div>
+    <div id="admin-list"></div>
+    <button class="reset-btn" onclick="resetPage('admin')">Zurücksetzen</button>
+  </div>
+
+  <!-- WEEKLY -->
+  <div id="page-weekly" class="page">
+    <div class="section-label">📅 Wöchentliche Ankerpunkte</div>
+    <table class="week-table">
+      <thead><tr><th>Tag</th><th>Fokus</th></tr></thead>
+      <tbody>
+        <tr><td>Montag</td><td>Fitness + Hund Trainingsfokus + Italienisch Mittagspause</td></tr>
+        <tr><td>Dienstag</td><td>Büro + 1 Admin-Aufgabe nach Arbeit + Italienisch im Pendeln</td></tr>
+        <tr><td>Mittwoch</td><td>Büro + Garten 30 min (nach Arbeit wenn möglich)</td></tr>
+        <tr><td>Donnerstag</td><td>Fitness + Wäsche / Haushalt + Italienisch Mittagspause</td></tr>
+        <tr><td>Freitag</td><td>Garten 30 min + Social Media Plan umsetzen</td></tr>
+        <tr><td>Wochenende</td><td>Garten (größere Session) + Erholung ist valid</td></tr>
+      </tbody>
+    </table>
+    <div class="divider"></div>
+    <div class="section-label">💡 Meine Regeln</div>
+    <ul class="rules-list">
+      <li>Laptop nie im Bett an WFH-Tagen.</li>
+      <li>Ohrentropfen + Vitamine vor dem Handy — jeden Tag.</li>
+      <li>Hund bürsten direkt nach dem Spaziergang.</li>
+      <li>Bett machen sobald ich nach dem Spaziergang reinkomme.</li>
+      <li>Wäschekorb in den TV-Raum tragen bevor ich mich hinsetze.</li>
+      <li>Eine Admin-Aufgabe pro Bürotag — nicht mehr, nicht weniger.</li>
+    </ul>
+  </div>
+
+  <div class="footer">Alles wird lokal in deinem Browser gespeichert</div>
 </div>
 
 <script>
-function sw(id,el){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-  el.classList.add('on');
+// ── Date ──────────────────────────────────────────────
+const today = new Date();
+const DAYS = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+const MONTHS = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+document.getElementById('today-date').textContent =
+  `${DAYS[today.getDay()]}, ${today.getDate()}. ${MONTHS[today.getMonth()]} ${today.getFullYear()}`;
+
+// ── Default task data ─────────────────────────────────
+const DEFAULTS = {
+  wfh: [
+    { section: '🌅 Morgen', text: 'Ohrentropfen — vor dem Handy', badge: 'b-health', badgeText: '💊 Gesundheit' },
+    { section: '🌅 Morgen', text: 'Vitamine — vor dem Handy', badge: 'b-health', badgeText: '💊 Gesundheit' },
+    { section: '🌅 Morgen', text: 'Morgenspaziergang — angezogen, kein Schlafanzug', badge: 'b-dog', badgeText: '🐶 Hund', sub: '1 Trainingsmoment: Trick oder Menschenmenge üben' },
+    { section: '🌅 Morgen', text: 'Hund bürsten — vor dem Schuhe ausziehen', badge: 'b-dog', badgeText: '🐶 Hund' },
+    { section: '🌅 Morgen', text: 'Bett machen — sofort nach dem Reinkommen', sub: '90 Sekunden. Verhindert Rückfall ins Bett.' },
+    { section: '🌅 Morgen', text: 'Frühstück + Kaffee — Pflicht' },
+    { section: '💻 Arbeit', text: 'Laptop NUR am Schreibtisch — nie im Bett', badge: 'b-work', badgeText: '💻 Arbeit' },
+    { section: '💻 Arbeit', text: 'Arbeitsblock 09:00 – 12:30' },
+    { section: '🍜 Mittagspause', text: 'Alarm "girl get up" — 12:30' },
+    { section: '🍜 Mittagspause', text: 'Italienisch 15 min — während des Essens', badge: 'b-ital', badgeText: '🇮🇹 Italiano', sub: 'Podcast / Duolingo / YouTube — kein Extra-Aufwand' },
+    { section: '🍜 Mittagspause', text: 'Arbeitsblock 13:00 – 17:00' },
+    { section: '🌆 Abend', text: 'Abendspaziergang 17:00 — 40–60 min + Training', badge: 'b-dog', badgeText: '🐶 Hund' },
+    { section: '🌆 Abend', text: 'Fitness — 30 min' },
+    { section: '🌆 Abend', text: 'Eine Haushalts-Kleinaufgabe', sub: 'Wäschekorb in den TV-Raum tragen zählt auch.' },
+    { section: '🌙 Nacht', text: 'Ohrentropfen', badge: 'b-health', badgeText: '💊 Gesundheit' },
+    { section: '🌙 Nacht', text: 'Gesichtsroutine' },
+  ],
+  office: [
+    { section: '🌅 Morgen', text: 'Ohrentropfen — vor dem Handy', badge: 'b-health', badgeText: '💊 Gesundheit' },
+    { section: '🌅 Morgen', text: 'Vitamine — neben den Schlüsseln', badge: 'b-health', badgeText: '💊 Gesundheit' },
+    { section: '🌅 Morgen', text: 'Kurzer Spaziergang + bürsten + 1 Trainingsmoment', badge: 'b-dog', badgeText: '🐶 Hund' },
+    { section: '🌅 Morgen', text: 'Frühstück vor dem Büro' },
+    { section: '🚌 Pendelweg', text: 'Italienisch im Zug/Bus', badge: 'b-ital', badgeText: '🇮🇹 Italiano', sub: 'Podcast oder Lesson — kein Extra-Aufwand' },
+    { section: '🏢 Nach der Arbeit', text: 'Eine Admin-Aufgabe vor dem Entspannen', sub: 'Garantie, Bilderrahmen, Mail — nur eine.' },
+    { section: '🌆 Abend', text: 'Abendspaziergang 21:00 — 40–60 min + Training', badge: 'b-dog', badgeText: '🐶 Hund', sub: 'Abends mehr Menschen = ideal für Menschenmenge-Training' },
+    { section: '🌆 Abend', text: 'Optional: eine Kleinaufgabe' },
+    { section: '🌙 Nacht', text: 'Ohrentropfen', badge: 'b-health', badgeText: '💊 Gesundheit' },
+    { section: '🌙 Nacht', text: 'Gesichtsroutine' },
+  ],
+  weekend: [
+    { section: '🌅 Morgen (flexibel)', text: 'Ohrentropfen — vor dem Handy', badge: 'b-health', badgeText: '💊 Gesundheit' },
+    { section: '🌅 Morgen (flexibel)', text: 'Vitamine', badge: 'b-health', badgeText: '💊 Gesundheit' },
+    { section: '🌅 Morgen (flexibel)', text: 'Frühstück' },
+    { section: '🌅 Morgen (flexibel)', text: 'Langer Spaziergang + Trainingsfokus', badge: 'b-dog', badgeText: '🐶 Hund', sub: 'Guter Tag für neuen Trick oder Menschenmenge-Session' },
+    { section: '🌅 Morgen (flexibel)', text: 'Hund bürsten', badge: 'b-dog', badgeText: '🐶 Hund' },
+    { section: '🌻 Nachmittag', text: 'Garten — 1 Abschnitt, 30–45 min', sub: 'Nur bei gutem Wetter. Nur ein Abschnitt.' },
+    { section: '🌻 Nachmittag', text: 'Optional: Haushalt / Wäsche / Fensterrahmen' },
+    { section: '🌙 Abend', text: 'Italienisch — auch 10 min zählen', badge: 'b-ital', badgeText: '🇮🇹 Italiano' },
+    { section: '🌙 Abend', text: 'Ohrentropfen + Gesichtsroutine', badge: 'b-health', badgeText: '💊 Gesundheit' },
+  ],
+  admin: [
+    { section: '📋 Offene Aufgaben', text: 'Oral-B Garantie — service.oralb.com', sub: 'Seriennummer von der Unterseite + Kaufbeleg. Kein Keller nötig.' },
+    { section: '📋 Offene Aufgaben', text: 'Bilderrahmen ausmessen (Flur)', sub: 'Maßband, 3 Minuten, in Handy-Notizen schreiben.' },
+    { section: '📋 Offene Aufgaben', text: 'Bilder drucken (A4 Drucker)', sub: 'Dateien vorbereiten — Qualität egal für jetzt, einfach drucken.' },
+    { section: '📋 Offene Aufgaben', text: 'Bilder im Flur tauschen', sub: 'Leiter holen, alle Rahmen in einer Session — nicht einzeln.' },
+    { section: '📋 Offene Aufgaben', text: 'Standardbild im Wohnzimmer tauschen' },
+    { section: '📋 Offene Aufgaben', text: 'Mängelanzeige Ratten an Verpächter', sub: 'Grünflächenamt / Liegenschaftsamt — schriftlich.' },
+    { section: '📋 Offene Aufgaben', text: 'Social Media Plan importieren + in Tagesplan einbauen' },
+  ],
+};
+
+// ── State ─────────────────────────────────────────────
+function loadState() {
+  try { const s = localStorage.getItem('tagesplan_v2'); return s ? JSON.parse(s) : {}; }
+  catch(e) { return {}; }
 }
+function saveState() {
+  try { localStorage.setItem('tagesplan_v2', JSON.stringify(appState)); } catch(e) {}
+}
+
+let appState = loadState();
+
+// initialise task lists from defaults if not yet saved
+['wfh','office','weekend','admin'].forEach(page => {
+  if (!appState[page]) {
+    appState[page] = { tasks: DEFAULTS[page].map((t,i) => ({ id: 'def_'+i, ...t, done: false })) };
+  } else if (!appState[page].tasks) {
+    appState[page].tasks = DEFAULTS[page].map((t,i) => ({ id: 'def_'+i, ...t, done: false }));
+  }
+});
+
+if (!appState.garden) {
+  appState.garden = [
+    {id:'g1',label:'A1',state:'done'},{id:'g2',label:'A2',state:'done'},
+    {id:'g3',label:'A3',state:'done'},{id:'g4',label:'A4',state:'done'},
+    {id:'g5',label:'A5',state:'done'},{id:'g6',label:'A6',state:'mowed'},
+    {id:'g7',label:'A7',state:'mowed'},{id:'g8',label:'A8',state:'mowed'},
+    {id:'g9',label:'A9',state:'mowed'},{id:'g10',label:'A10',state:'mowed'},
+    {id:'g11',label:'A11',state:'pending'},{id:'g12',label:'A12',state:'pending'},
+    {id:'g13',label:'A13',state:'pending'},{id:'g14',label:'A14',state:'pending'},
+    {id:'g15',label:'A15',state:'pending',sub:'Erdhaufen'},
+  ];
+}
+
+// ── Render task list ──────────────────────────────────
+const CHECK_SVG = `<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function renderPage(page) {
+  const container = document.getElementById(page+'-list');
+  const tasks = appState[page].tasks;
+
+  // group by section
+  const sections = [];
+  const sectionMap = {};
+  tasks.forEach(t => {
+    if (!sectionMap[t.section]) { sectionMap[t.section] = []; sections.push(t.section); }
+    sectionMap[t.section].push(t);
+  });
+
+  let html = '';
+  sections.forEach(sec => {
+    html += `<div class="section-label">${sec}</div>`;
+    sectionMap[sec].forEach(task => {
+      const badgeHtml = task.badge ? `<span class="badge ${task.badge}">${task.badgeText}</span>` : '';
+      const subHtml = task.sub ? `<div class="isub">${task.sub}</div>` : '';
+      html += `
+        <div class="item${task.done?' done':''}" data-id="${task.id}" data-page="${page}">
+          <div class="cb" onclick="toggleTask('${page}','${task.id}')">${CHECK_SVG}</div>
+          <div class="itext" onclick="toggleTask('${page}','${task.id}')" style="flex:1">${badgeHtml}${escHtml(task.text)}${subHtml}</div>
+          <button class="del-btn" onclick="deleteTask('${page}','${task.id}')" title="Löschen">✕</button>
+        </div>`;
+    });
+    // add-task row per section
+    html += `
+      <div class="add-input-row" id="addinput-${page}-${cssId(sec)}">
+        <div class="add-cb-placeholder"></div>
+        <input class="add-input" placeholder="Aufgabe eingeben und Enter drücken…"
+          onkeydown="handleAddKey(event,'${page}','${sec}')"
+          onblur="hideAddInput('${page}','${sec}')">
+      </div>
+      <div class="add-row" id="addrow-${page}-${cssId(sec)}" onclick="showAddInput('${page}','${sec}')">
+        <span class="plus">+</span> Aufgabe hinzufügen
+      </div>`;
+  });
+
+  container.innerHTML = html;
+  updateProgress(page);
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function cssId(s) { return s.replace(/[^a-z0-9]/gi,'_'); }
+
+function showAddInput(page, sec) {
+  const row = document.getElementById('addrow-'+page+'-'+cssId(sec));
+  const inp = document.getElementById('addinput-'+page+'-'+cssId(sec));
+  row.style.display = 'none';
+  inp.classList.add('visible');
+  inp.querySelector('input').focus();
+}
+
+function hideAddInput(page, sec) {
+  const row = document.getElementById('addrow-'+page+'-'+cssId(sec));
+  const inp = document.getElementById('addinput-'+page+'-'+cssId(sec));
+  inp.querySelector('input').value = '';
+  inp.classList.remove('visible');
+  row.style.display = '';
+}
+
+function handleAddKey(e, page, sec) {
+  if (e.key === 'Enter') {
+    const val = e.target.value.trim();
+    if (val) {
+      addTask(page, sec, val);
+    } else {
+      hideAddInput(page, sec);
+    }
+  }
+  if (e.key === 'Escape') hideAddInput(page, sec);
+}
+
+function addTask(page, sec, text) {
+  const id = 'usr_' + Date.now();
+  appState[page].tasks.push({ id, section: sec, text, done: false });
+  saveState();
+  renderPage(page);
+  // re-show add input for that section so user can keep adding
+  showAddInput(page, sec);
+}
+
+function deleteTask(page, id) {
+  appState[page].tasks = appState[page].tasks.filter(t => t.id !== id);
+  saveState();
+  renderPage(page);
+}
+
+function toggleTask(page, id) {
+  const task = appState[page].tasks.find(t => t.id === id);
+  if (task) { task.done = !task.done; saveState(); renderPage(page); }
+}
+
+function updateProgress(page) {
+  const tasks = appState[page].tasks;
+  const done = tasks.filter(t => t.done).length;
+  const total = tasks.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById(page+'-label').textContent = `${done} von ${total} erledigt`;
+  document.getElementById(page+'-bar').style.width = pct+'%';
+  document.getElementById(page+'-pct').textContent = pct+'%';
+}
+
+function resetPage(page) {
+  appState[page].tasks.forEach(t => t.done = false);
+  saveState();
+  renderPage(page);
+}
+
+// ── Garden ────────────────────────────────────────────
+const GSTATE_ORDER = ['pending','mowed','done'];
+const GSTATE_ICON = { done:'✅', mowed:'〰️', pending:'○' };
+
+function buildGarden() {
+  const grid = document.getElementById('garden-grid');
+  grid.innerHTML = '';
+  appState.garden.forEach(g => {
+    const d = document.createElement('div');
+    d.className = 'gbox ' + g.state;
+    d.innerHTML = `<span class="gbox-icon">${GSTATE_ICON[g.state]}</span><span>${g.label}${g.sub?'<br><span style="font-size:9px">'+g.sub+'</span>':''}</span>`;
+    d.onclick = () => {
+      g.state = GSTATE_ORDER[(GSTATE_ORDER.indexOf(g.state)+1)%3];
+      saveState(); buildGarden();
+    };
+    grid.appendChild(d);
+  });
+  const done = appState.garden.filter(g=>g.state==='done').length;
+  const started = appState.garden.filter(g=>g.state!=='pending').length;
+  const pct = Math.round(started/15*100);
+  document.getElementById('garden-label').textContent = `${done} fertig geputzt · ${started} von 15 begonnen`;
+  document.getElementById('garden-bar').style.width = pct+'%';
+  document.getElementById('garden-pct').textContent = pct+'%';
+}
+
+// ── Nav ───────────────────────────────────────────────
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── Init ──────────────────────────────────────────────
+['wfh','office','weekend','admin'].forEach(p => renderPage(p));
+buildGarden();
+saveState();
 </script>
+</body>
+</html>
